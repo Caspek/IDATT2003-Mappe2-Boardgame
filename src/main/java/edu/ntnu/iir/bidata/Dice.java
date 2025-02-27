@@ -8,11 +8,11 @@ public class Dice extends BoardGame {
     public Dice(int numberOfDice) {
     }
 
-    public int roll() {
+    //public int roll() {
 
-    }
+    //}
 
-    public int getDie(int dieNumber) {
+    //public int getDie(int dieNumber) {
 
-    }
+    //}
 }

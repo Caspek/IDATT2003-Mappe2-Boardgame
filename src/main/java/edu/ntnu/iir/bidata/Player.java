@@ -5,7 +5,7 @@ public class Player extends BoardGame {
     private Tile currentTile;
 
     public Player (String name, BoardGame game) {
-
+    this.name = name;
     }
 
     public void placeOnTile(Tile tile) {
@@ -14,5 +14,9 @@ public class Player extends BoardGame {
 
     public void move(int steps) {
 
+    }
+
+    public String getName () {
+        return name;
     }
 }
