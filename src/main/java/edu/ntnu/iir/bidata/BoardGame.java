@@ -27,7 +27,11 @@ public BoardGame() {
     }
 
     public void createDice() {
+        this.dice = new Dice(1);
+        }
 
+    public int rollDice() {
+        return dice.roll();
     }
 
     public void createBoard() {
