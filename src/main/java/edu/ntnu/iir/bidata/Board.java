@@ -1,16 +1,23 @@
 package edu.ntnu.iir.bidata;
 
-
+import java.util.HashMap;
 import java.util.Map;
 
-class Board extends BoardGame {
+public class Board {
     private Map<Integer, Tile> tiles;
 
-    public void addTile(Tile tile) {
-
+    public Board(int numberOfTiles) {
+        tiles = new HashMap<>();
+        for (int i = 1; i <= numberOfTiles; i++) {
+            tiles.put(i, new Tile(i));
+        }
+        for (int i = 1; i < numberOfTiles; i++) {
+            tiles.get(i).setNextTile(tiles.get(i + 1));
+        }
     }
 
-    public void getTile(int position) {
-
+    public Tile getTile(int id) {
+        return tiles.get(id);
     }
+
 }

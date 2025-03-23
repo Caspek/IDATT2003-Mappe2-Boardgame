@@ -3,15 +3,17 @@ package edu.ntnu.iir.bidata;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class BoardGame {
     private Board board;
     private List<Player> players;
     private Player currentplayer;
-    private Dice dice;
+    public Dice dice;
 
 public BoardGame() {
     players = new ArrayList<>();
+    board = new Board(100);
 }
     public void addPlayer(Player player) {
         if (players.size() < 2) {
@@ -30,28 +32,22 @@ public BoardGame() {
         this.dice = new Dice(1);
         }
 
-    public int rollDice() {
-        return dice.roll();
-    }
 
     public void createBoard() {
 
     }
 
-    //public Player getWinner() {
-
-    //}
-
-    public void play() {
-
-
+    public Board getBoard() {
+        return board;
     }
+
+    public Dice getDice() {
+        return dice;
+    }
+
 
     public List<Player> getPlayers() {
-        return players;
+    return players;
     }
 
-    public Player getCurrentPlayer() {
-        return currentplayer;
-    }
 }

@@ -1,12 +1,23 @@
 package edu.ntnu.iir.bidata;
 
-class Tile extends Board{
+public class Tile {
+    private int id;
     private Tile nextTile;
-    private int tileId;
-    private TileAction landAction;
 
-    public Tile(int tileId) {
+    public Tile(int id) {
+        this.id = id;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public Tile getNextTile() {
+        return nextTile;
+    }
+
+    public void setNextTile(Tile nextTile) {
+        this.nextTile = nextTile;
     }
 
     public void landPlayer(Player player) {
@@ -14,10 +25,8 @@ class Tile extends Board{
     }
 
     public void leavePlayer(Player player) {
-
     }
 
-    public void setNextTile(Tile nextTile) {
-
+    public void setLandAction(TileAction landAction) {
     }
 }

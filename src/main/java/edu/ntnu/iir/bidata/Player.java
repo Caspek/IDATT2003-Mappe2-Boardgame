@@ -1,22 +1,35 @@
 package edu.ntnu.iir.bidata;
 
-public class Player extends BoardGame {
+public class Player {
     private String name;
+    private BoardGame game;
     private Tile currentTile;
+    private Dice dice;
 
     public Player (String name, BoardGame game) {
-    this.name = name;
+        this.name = name;
+        this.game = game;
+        this.currentTile = game.getBoard().getTile(1);
+        this.dice = new Dice(1);
     }
 
-    public void placeOnTile(Tile tile) {
-
+    public Tile getCurrentTile() {
+        return currentTile;
     }
 
     public void move(int steps) {
-
+        for (int i = 0; i < steps; i++) {
+            if (currentTile.getNextTile() != null) {
+                currentTile = currentTile.getNextTile();
+            } else {
+                System.out.println(name + " has reached the end of the game!");
+                break;
+            }
+        }
     }
 
     public String getName () {
         return name;
     }
+
 }

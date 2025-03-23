@@ -1,21 +1,24 @@
 package edu.ntnu.iir.bidata;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class Dice extends BoardGame {
-    private List<Die> dice;
-    private Random random;
+public class Dice {
+    public List<Die> dice;
 
     public Dice(int numberOfDice) {
-        this.random = new Random();
+        dice = new ArrayList<>();
+        for (int i = 0; i < numberOfDice; i++) {
+            dice.add(new Die());
+        }
     }
 
     public int roll() {
-        return random.nextInt(6) + 1;
+        int sum = 0;
+        for (Die die : dice) {
+            sum += die.roll();
+        }
+        return sum;
     }
 
-    //public int getDie(int dieNumber) {
-
-    //}
 }
