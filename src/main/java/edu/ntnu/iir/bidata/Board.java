@@ -13,6 +13,7 @@ public class Board {
         }
         for (int i = 1; i < numberOfTiles; i++) {
             tiles.get(i).setNextTile(tiles.get(i + 1));
+            tiles.get(i + 1).setPreviousTile(tiles.get(i));
         }
     }
 

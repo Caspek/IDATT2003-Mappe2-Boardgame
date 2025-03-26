@@ -18,12 +18,23 @@ public class Player {
     }
 
     public void move(int steps) {
-        for (int i = 0; i < steps; i++) {
-            if (currentTile.getNextTile() != null) {
-                currentTile = currentTile.getNextTile();
-            } else {
-                System.out.println(name + " has reached the end of the game!");
-                break;
+        if (steps > 0) {
+            for (int i = 0; i < steps; i++) {
+                if (currentTile.getNextTile() != null) {
+                    currentTile = currentTile.getNextTile();
+                } else {
+                    System.out.println(name + " has reached the end of the game!");
+                    break;
+                }
+            }
+        } else if (steps < 0) {
+            for (int i = 0; i < Math.abs(steps); i++) {
+                if (currentTile.getPreviousTile() != null) {
+                    currentTile = currentTile.getPreviousTile();
+                } else {
+                    System.out.println(name + " has reached the start of the game!");
+                    break;
+                }
             }
         }
     }
