@@ -17,15 +17,7 @@ public class Player {
         return currentTile;
     }
 
-    public void setCurrentTile(Tile tile) {
-        this.currentTile = tile;
-    }
-
-    public BoardGame getGame() {
-        return game;
-    }
-
-    public void move(int steps) {
+    public Tile move(int steps) {
         if (steps > 0) {
             for (int i = 0; i < steps; i++) {
                 if (currentTile.getNextTile() != null) {
@@ -45,6 +37,7 @@ public class Player {
                 }
             }
         }
+        return currentTile;
     }
 
     public String getName () {
