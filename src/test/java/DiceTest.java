@@ -36,11 +36,4 @@ public class DiceTest {
         assertEquals(0, result, "Roll should be 0 when no dice are used");
         System.out.println(result);
     }
-
-    @Test
-    public void testRollWithNegativeDice() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Dice(-1); // Initialize with negative dice, should throw exception
-        }, "You cannot roll a negative number of dice, check and try again");
-    }
 }

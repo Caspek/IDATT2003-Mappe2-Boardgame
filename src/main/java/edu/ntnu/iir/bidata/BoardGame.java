@@ -3,11 +3,10 @@ package edu.ntnu.iir.bidata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class BoardGame {
-    private Board board;
-    private List<Player> players;
+    private final Board board;
+    private final List<Player> players;
     private Player currentplayer;
     public Dice dice;
 

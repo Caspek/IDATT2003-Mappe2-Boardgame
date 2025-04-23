@@ -1,5 +1,6 @@
 package edu.ntnu.iir.bidata;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class BoardGameApp {
@@ -9,17 +10,20 @@ public class BoardGameApp {
         game.createBoard();
         game.createDice();
 
-        System.out.println("Enter the name of player 1:");
-        String player1Name = scanner.nextLine();
-        Player player1 = new Player(player1Name, game);
-        game.addPlayer(player1);
+        String filePath = "src/main/resources/players.json";
+        List<Player> players = PlayerLoader.loadPlayersFromFile(filePath, game);
 
-        System.out.println("Enter the name of player 2:");
-        String player2Name = scanner.nextLine();
-        Player player2 = new Player(player2Name, game);
-        game.addPlayer(player2);
+        if (players == null || players.isEmpty()) {
+            System.out.println("No players found in the file.");
+            return;
+        }
+        for (Player player : players) {
+            game.addPlayer(player);
+            System.out.println("Player added: " + player.getName());
+        }
 
-        System.out.println("Starting the game...");
+        System.out.println("Game setup complete. Players are ready to play.");
+
 
         while (true) {
             for (Player player : game.getPlayers()) {

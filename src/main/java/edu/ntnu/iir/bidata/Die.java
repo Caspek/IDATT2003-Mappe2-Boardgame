@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Die {
     private int lastRolledValue;
-    private Random random;
+    private transient final Random random;
 
     public Die() {
         this.random = new Random();

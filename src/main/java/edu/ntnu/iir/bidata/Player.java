@@ -1,10 +1,10 @@
 package edu.ntnu.iir.bidata;
 
 public class Player {
-    private String name;
+    private final String name;
     private BoardGame game;
     private Tile currentTile;
-    private Dice dice;
+    private final Dice dice;
 
     public Player (String name, BoardGame game) {
         this.name = name;
@@ -42,6 +42,11 @@ public class Player {
 
     public String getName () {
         return name;
+    }
+
+    public void setGame(BoardGame game) {
+        this.game = game;
+        this.currentTile = game.getBoard().getTile(1); // Reset to the starting tile
     }
 
 }
