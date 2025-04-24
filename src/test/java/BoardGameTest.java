@@ -1,5 +1,5 @@
-import edu.ntnu.iir.bidata.BoardGame;
-import edu.ntnu.iir.bidata.Player;
+import edu.ntnu.iir.bidata.board.BoardGame;
+import edu.ntnu.iir.bidata.player.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

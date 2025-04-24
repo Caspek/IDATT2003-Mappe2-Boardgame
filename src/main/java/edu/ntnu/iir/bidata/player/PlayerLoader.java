@@ -1,5 +1,6 @@
-package edu.ntnu.iir.bidata;
+package edu.ntnu.iir.bidata.player;
 
+import edu.ntnu.iir.bidata.board.BoardGame;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

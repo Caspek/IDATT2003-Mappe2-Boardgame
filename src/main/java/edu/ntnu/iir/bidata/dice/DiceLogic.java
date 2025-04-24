@@ -1,4 +1,4 @@
-package edu.ntnu.iir.bidata;
+package edu.ntnu.iir.bidata.dice;
 
 import java.util.ArrayList;
 import java.util.List;

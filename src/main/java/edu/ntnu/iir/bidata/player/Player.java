@@ -1,4 +1,7 @@
-package edu.ntnu.iir.bidata;
+package edu.ntnu.iir.bidata.player;
+
+import edu.ntnu.iir.bidata.board.BoardGame;
+import edu.ntnu.iir.bidata.tile.Tile;
 
 public class Player {
     private final String name;
@@ -17,6 +20,10 @@ public class Player {
         return currentTile;
     }
 
+    public void setCurrentTile(Tile currentTile) {
+        this.currentTile = currentTile;
+    }
+
     public String getPlayingPiece() {
         return playingPiece;
     }
@@ -25,12 +32,14 @@ public class Player {
         if (steps > 0) {
             for (int i = 0; i < steps; i++) {
                 if (currentTile.getNextTile() != null) {
+                    currentTile.leavePlayer(this);
                     currentTile = currentTile.getNextTile();
                 } else {
                     System.out.println(name + " has reached the end of the game!");
-                    break;
+                    return currentTile;
                 }
             }
+            currentTile.landPlayer(this);
         }
         return currentTile;
     }
@@ -41,6 +50,10 @@ public class Player {
 
     public void setGame(BoardGame game) {
         this.game = game;
-        this.currentTile = game.getBoard().getTile(1); // Reset to the starting tile
+        this.currentTile = game.getBoard().getTile(1);
+    }
+
+    public BoardGame getGame() {
+        return game;
     }
 }

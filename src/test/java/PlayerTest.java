@@ -1,9 +1,9 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import edu.ntnu.iir.bidata.Player;
-import edu.ntnu.iir.bidata.BoardGame;
-import edu.ntnu.iir.bidata.Tile;
+import edu.ntnu.iir.bidata.player.Player;
+import edu.ntnu.iir.bidata.board.BoardGame;
+import edu.ntnu.iir.bidata.tile.Tile;
 
 
 public class PlayerTest {

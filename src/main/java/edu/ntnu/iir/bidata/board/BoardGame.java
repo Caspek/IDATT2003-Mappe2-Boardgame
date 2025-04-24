@@ -1,4 +1,7 @@
-package edu.ntnu.iir.bidata;
+package edu.ntnu.iir.bidata.board;
+
+import edu.ntnu.iir.bidata.player.Player;
+import edu.ntnu.iir.bidata.dice.Dice;
 
 import java.util.ArrayList;
 import java.util.List;

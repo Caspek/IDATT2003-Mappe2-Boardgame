@@ -1,11 +1,14 @@
-package edu.ntnu.iir.bidata;
+package edu.ntnu.iir.bidata.board;
 
+import edu.ntnu.iir.bidata.tile.MoveExtraStepsAction;
+import edu.ntnu.iir.bidata.tile.Tile;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,10 +36,20 @@ public class Board {
                 if (nextTileId != null) {
                     currentTile.setNextTile(tiles.get(nextTileId));
                 }
+
+                // Parse landAction for ladders/snakes
+                if (tileObject.has("landAction")) {
+                    int steps = tileObject.getInt("landAction");
+                    currentTile.setLandAction(new MoveExtraStepsAction(steps));
+                }
             }
         } catch (IOException e) {
             System.err.println("Failed to load board from file: " + e.getMessage());
         }
+    }
+
+    public Collection<Tile> getAllTiles() {
+        return tiles.values();
     }
 
     public Tile getTile(int id) {
