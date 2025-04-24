@@ -12,8 +12,12 @@ public class BoardGame {
         board.loadBoardFromFile(filePath);
     }
 
-    public void createDice() {
-        this.dice = new Dice(1);
+    public void setDice(Dice dice) {
+        this.dice = dice;
+    }
+
+    public int rollDice() {
+        return dice.roll();
     }
 
     public void addPlayer(Player player) {

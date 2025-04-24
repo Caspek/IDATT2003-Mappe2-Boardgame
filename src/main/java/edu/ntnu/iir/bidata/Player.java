@@ -5,14 +5,12 @@ public class Player {
     private final String playingPiece;
     private BoardGame game;
     private Tile currentTile;
-    private final Dice dice;
 
-    public Player (String name, String playingPiece, BoardGame game) {
+    public Player(String name, String playingPiece, BoardGame game) {
         this.name = name;
         this.playingPiece = playingPiece;
         this.game = game;
         this.currentTile = game.getBoard().getTile(1);
-        this.dice = new Dice(1);
     }
 
     public Tile getCurrentTile() {
@@ -22,7 +20,6 @@ public class Player {
     public String getPlayingPiece() {
         return playingPiece;
     }
-
 
     public Tile move(int steps) {
         if (steps > 0) {
@@ -38,7 +35,7 @@ public class Player {
         return currentTile;
     }
 
-    public String getName () {
+    public String getName() {
         return name;
     }
 
@@ -46,5 +43,4 @@ public class Player {
         this.game = game;
         this.currentTile = game.getBoard().getTile(1); // Reset to the starting tile
     }
-
 }

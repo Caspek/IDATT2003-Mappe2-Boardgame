@@ -3,16 +3,14 @@ package edu.ntnu.iir.bidata;
 import java.util.Random;
 
 public class Die {
-    private int lastRolledValue;
-    private transient final Random random;
+    private static final int MAX_VALUE = 6;
+    private final Random random;
 
     public Die() {
         this.random = new Random();
     }
 
     public int roll() {
-        lastRolledValue = random.nextInt(6) + 1;
-        return lastRolledValue;
+        return random.nextInt(MAX_VALUE) + 1;
     }
-
 }
