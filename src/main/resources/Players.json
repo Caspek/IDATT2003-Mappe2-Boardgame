@@ -1,8 +1,10 @@
 [
   {
-    "name": "Casper"
+    "name": "Casper",
+    "playingPiece": "TopHat"
   },
   {
-    "name": "Oskar"
+    "name": "Oskar",
+    "playingPiece": "Racecar"
   }
 ]

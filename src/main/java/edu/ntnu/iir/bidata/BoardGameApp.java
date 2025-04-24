@@ -7,23 +7,23 @@ public class BoardGameApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         BoardGame game = new BoardGame();
-        game.createBoard();
+        game.loadBoard("src/main/resources/board.json");
         game.createDice();
 
         String filePath = "src/main/resources/players.json";
         List<Player> players = PlayerLoader.loadPlayersFromFile(filePath, game);
 
-        if (players == null || players.isEmpty()) {
+        if (players.isEmpty()) {
             System.out.println("No players found in the file.");
             return;
         }
+
         for (Player player : players) {
             game.addPlayer(player);
-            System.out.println("Player added: " + player.getName());
+            System.out.println("Player added: " + player.getName() + " (" + player.getPlayingPiece() + ")");
         }
 
         System.out.println("Game setup complete. Players are ready to play.");
-
 
         while (true) {
             for (Player player : game.getPlayers()) {

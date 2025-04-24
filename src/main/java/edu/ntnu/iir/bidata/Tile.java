@@ -1,9 +1,8 @@
 package edu.ntnu.iir.bidata;
 
 public class Tile {
-    private int id;
+    private final int id;
     private Tile nextTile;
-    private Tile previousTile;
 
     public Tile(int id) {
         this.id = id;
@@ -17,16 +16,11 @@ public class Tile {
         return nextTile;
     }
 
+    public void getPreviousTile() {
+    }
+
     public void setNextTile(Tile nextTile) {
         this.nextTile = nextTile;
-    }
-
-    public Tile getPreviousTile() {
-        return previousTile;
-    }
-
-    public void setPreviousTile(Tile previousTile) {
-        this.previousTile = previousTile;
     }
 
     public void landPlayer(Player player) {
