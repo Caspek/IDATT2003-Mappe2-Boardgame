@@ -56,8 +56,11 @@ public class Board {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Failed to load board from file: " + e.getMessage());
+                throw new edu.ntnu.iir.bidata.JsonParsingException("Failed to read the JSON file: " + filePath, e);
+        } catch (Exception e) {
+                throw new edu.ntnu.iir.bidata.JsonParsingException("Failed to parse the JSON file: " + filePath, e);
         }
+
     }
 
     public Collection<Tile> getAllTiles() {
