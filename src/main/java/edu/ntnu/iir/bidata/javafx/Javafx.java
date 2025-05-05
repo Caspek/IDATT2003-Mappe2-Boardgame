@@ -21,6 +21,14 @@ public class Javafx extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, Color.CORNFLOWERBLUE);
 
+        stage.setTitle("stigespillet");
+
+        stage.setWidth(800);
+        stage.setHeight(800);
+
+        stage.setResizable(false);
+        stage.setFullScreen(true);
+
         stage.setScene(scene);
         stage.show();
 
