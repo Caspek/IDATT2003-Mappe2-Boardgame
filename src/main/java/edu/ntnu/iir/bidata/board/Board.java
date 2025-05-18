@@ -3,7 +3,6 @@ package edu.ntnu.iir.bidata.board;
 import edu.ntnu.iir.bidata.tile.Tile;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

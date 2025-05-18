@@ -17,6 +17,13 @@ import java.util.Map;
  * Responsible for reading the board configuration from a JSON file.
  */
 public class BoardFileReader {
+    private final Board board;
+
+    public BoardFileReader(Board board) {
+        this.board = board;
+    }
+
+
 
     /**
      * Reads the board configuration from a JSON file and returns a map of tiles.
@@ -55,7 +62,7 @@ public class BoardFileReader {
                         int steps = tileObject.getInt("landAction");
                         currentTile.setLandAction(new MoveExtraStepsAction(steps));
                     } else if ("randomTeleport".equals(tileObject.getString("landAction"))) {
-                        currentTile.setLandAction(new RandomTeleportAction(null)); // Placeholder for Board reference
+                        currentTile.setLandAction(new RandomTeleportAction(board));
                     }
                 }
             }
