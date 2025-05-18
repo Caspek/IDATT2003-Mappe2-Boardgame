@@ -16,7 +16,8 @@ public class BoardGame {
      * @param filePath The path to the board configuration file.
      */
     public void loadBoard(String filePath) {
-        board.loadBoardFromFile(filePath);
+        BoardFileReader boardFileReader = new BoardFileReader();
+        board.setTiles(boardFileReader.readBoardFromFile(filePath));
     }
 
     /**

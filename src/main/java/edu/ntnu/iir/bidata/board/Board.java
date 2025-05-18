@@ -1,15 +1,9 @@
 package edu.ntnu.iir.bidata.board;
 
-import edu.ntnu.iir.bidata.tile.MoveExtraStepsAction;
-import edu.ntnu.iir.bidata.tile.RandomTeleportAction;
 import edu.ntnu.iir.bidata.tile.Tile;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,52 +11,30 @@ public class Board {
     private final Map<Integer, Tile> tiles = new HashMap<>(); // Stores all tiles by their ID.
 
     /**
-     * Loads the board configuration from a JSON file.
-     * @param filePath The path to the JSON file containing the board configuration.
+     * Sets the tiles for the board.
+     * @param tiles A map of tile IDs to Tile objects.
+     * @throws IllegalArgumentException if the tiles map is null or contains invalid data.
      */
-    public void loadBoardFromFile(String filePath) {
-        try {
-            // Read the JSON file content.
-            String content = new String(Files.readAllBytes(Paths.get(filePath)));
-            JSONObject jsonObject = new JSONObject(content);
-            JSONArray tileArray = jsonObject.getJSONArray("tiles");
-
-            // Create Tile objects for each tile in the JSON file.
-            for (int i = 0; i < tileArray.length(); i++) {
-                JSONObject tileObject = tileArray.getJSONObject(i);
-                int id = tileObject.getInt("id");
-                tiles.put(id, new Tile(id));
-            }
-
-            // Link tiles and set land actions (e.g., ladders or snakes).
-            for (int i = 0; i < tileArray.length(); i++) {
-                JSONObject tileObject = tileArray.getJSONObject(i);
-                int id = tileObject.getInt("id");
-                Integer nextTileId = tileObject.isNull("nextTile") ? null : tileObject.getInt("nextTile");
-
-                Tile currentTile = tiles.get(id);
-                if (nextTileId != null) {
-                    currentTile.setNextTile(tiles.get(nextTileId));
-                }
-
-                // Set land actions for special tiles.
-                if (tileObject.has("landAction")) {
-                    if (tileObject.get("landAction") instanceof Integer) {
-                        int steps = tileObject.getInt("landAction");
-                        currentTile.setLandAction(new MoveExtraStepsAction(steps));
-                    } else if ("randomTeleport".equals(tileObject.getString("landAction"))) {
-                        currentTile.setLandAction(new RandomTeleportAction(this));
-                    }
-                }
-            }
-        } catch (IOException e) {
-                throw new edu.ntnu.iir.bidata.JsonParsingException("Failed to read the JSON file: " + filePath, e);
-        } catch (Exception e) {
-                throw new edu.ntnu.iir.bidata.JsonParsingException("Failed to parse the JSON file: " + filePath, e);
+    public void setTiles(Map<Integer, Tile> tiles) {
+        if (tiles == null) {
+            throw new IllegalArgumentException("Tiles map cannot be null.");
         }
-
+        for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
+            if (entry.getKey() == null || entry.getValue() == null) {
+                throw new IllegalArgumentException("Tile IDs and Tile objects cannot be null.");
+            }
+            if (entry.getKey() < 1) {
+                throw new IllegalArgumentException("Tile IDs must be positive integers.");
+            }
+        }
+        this.tiles.clear();
+        this.tiles.putAll(tiles);
     }
 
+    /**
+     * Retrieves all tiles on the board.
+     * @return A collection of all Tile objects.
+     */
     public Collection<Tile> getAllTiles() {
         return tiles.values();
     }
@@ -71,8 +43,16 @@ public class Board {
      * Retrieves a specific tile by its ID.
      * @param id The ID of the tile.
      * @return The Tile object with the specified ID.
+     * @throws IllegalArgumentException if the tile ID is invalid or does not exist.
      */
     public Tile getTile(int id) {
-        return tiles.get(id);
+        if (id < 1) {
+            throw new IllegalArgumentException("Tile ID must be a positive integer.");
+        }
+        Tile tile = tiles.get(id);
+        if (tile == null) {
+            throw new IllegalArgumentException("No tile found with ID: " + id);
+        }
+        return tile;
     }
 }
