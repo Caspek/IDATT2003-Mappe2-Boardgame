@@ -54,4 +54,18 @@ public class Board {
         }
         return tile;
     }
+
+    public Tile getNextTile(Tile currentTile, int roll) {
+        if (currentTile == null) {
+            throw new IllegalArgumentException("Current tile cannot be null.");
+        }
+        Tile nextTile = currentTile;
+        for (int i = 0; i < roll; i++) {
+            if (nextTile.getNextTile() == null) {
+                return nextTile; // Stop at the last tile if no further tiles exist.
+            }
+            nextTile = nextTile.getNextTile();
+        }
+        return nextTile;
+    }
 }

@@ -10,7 +10,7 @@ public class Die {
      * Constructs a Die object with the default maximum value of 6.
      */
     public Die() {
-        this(6); // Default to a six-sided die
+        this(6); // The default value of a dice
     }
 
     /**

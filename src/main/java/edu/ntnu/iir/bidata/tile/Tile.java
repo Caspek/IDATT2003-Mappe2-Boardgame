@@ -95,4 +95,13 @@ public class Tile {
             throw new IllegalArgumentException("Player cannot be null.");
         }
     }
+
+    /**
+     * Checks if this tile is the winning tile.
+     *
+     * @return true if this tile is the winning tile, false otherwise.
+     */
+    public boolean isWinningTile() {
+        return nextTile == null; // A tile is the winning tile if it has no next tile.
+    }
 }

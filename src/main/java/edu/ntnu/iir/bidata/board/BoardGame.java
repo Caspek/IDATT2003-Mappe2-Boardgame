@@ -6,6 +6,12 @@ import edu.ntnu.iir.bidata.dice.Dice;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import edu.ntnu.iir.bidata.observer.BoardGameObserver;
+import edu.ntnu.iir.bidata.tile.Tile;
+
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class BoardGame {
     private final Board board = new Board();
@@ -14,6 +20,8 @@ public class BoardGame {
     private int currentPlayerIndex = 0;
     private boolean gameOver = false;
     private boolean hasWon = false;
+    private final Set<BoardGameObserver> observers = new HashSet<>();
+
 
     /**
      * Loads the board configuration from a file.
@@ -122,5 +130,76 @@ public class BoardGame {
      */
     public void setGameOver(boolean status) {
         this.gameOver = status;
+    }
+
+    /**
+     * Adds an observer to the game.
+     * @param observer The observer to add.
+     */
+    public void addObserver(BoardGameObserver observer) {
+        if (observer != null) {
+            observers.add(observer);
+        }
+    }
+
+    /**
+     * Removes an observer from the game.
+     * @param observer The observer to remove.
+     */
+    public void removeObserver(BoardGameObserver observer) {
+        observers.remove(observer);
+    }
+
+    /**
+     * Notifies observers when a player moves.
+     * @param player The player who moved.
+     * @param fromTile The tile the player moved from.
+     * @param toTile The tile the player moved to.
+     * @param roll The dice roll result.
+     */
+    private void notifyPlayerMoved(Player player, Tile fromTile, Tile toTile, int roll) {
+        for (BoardGameObserver observer : observers) {
+            observer.onPlayerMoved(player, fromTile, toTile, roll);
+        }
+    }
+
+    /**
+     * Notifies observers when a player wins the game.
+     * @param winner The player who won.
+     */
+    private void notifyGameWon(Player winner) {
+        for (BoardGameObserver observer : observers) {
+            observer.onGameWon(winner);
+        }
+    }
+
+    /**
+     * Rolls the dice and moves the current player.
+     */
+    public void rollAndMovePlayer() {
+        if (dice == null) {
+            throw new IllegalStateException("Dice has not been set.");
+        }
+
+        Player currentPlayer = getCurrentPlayer();
+        int roll = dice.roll();
+        Tile currentTile = currentPlayer.getCurrentTile();
+        Tile nextTile = board.getNextTile(currentTile, roll);
+
+        // Notify observers of the player's movement
+        notifyPlayerMoved(currentPlayer, currentTile, nextTile, roll);
+
+        // Move the player to the new tile
+        currentPlayer.setCurrentTile(nextTile);
+        nextTile.landPlayer(currentPlayer);
+
+        // Check for win condition
+        if (nextTile.isWinningTile()) {
+            hasWon = true;
+            gameOver = true;
+            notifyGameWon(currentPlayer);
+        } else {
+            nextPlayer();
+        }
     }
 }
