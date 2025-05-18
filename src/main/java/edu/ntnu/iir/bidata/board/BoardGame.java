@@ -11,6 +11,9 @@ public class BoardGame {
     private final Board board = new Board();
     private final List<Player> players = Collections.synchronizedList(new ArrayList<>());
     private Dice dice;
+    private int currentPlayerIndex = 0;
+    private boolean gameOver = false;
+    private boolean hasWon = false;
 
     /**
      * Loads the board configuration from a file.
@@ -79,5 +82,45 @@ public class BoardGame {
      */
     public Board getBoard() {
         return board;
+    }
+
+    /**
+     * Retrieves the current player.
+     * @return The current Player object.
+     */
+    public Player getCurrentPlayer() {
+        return players.get(currentPlayerIndex);
+    }
+
+    /**
+     * Retrieves the index of the next player.
+     * @return The index of the current player.
+     */
+    public void nextPlayer() {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    }
+
+    /**
+     * Checks if the game is over.
+     * @return true if the game is over, false otherwise.
+     */
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    /**
+     * Checks if a player has won the game.
+     * @return true if a player has won, false otherwise.
+     */
+    public boolean hasWon() {
+        return hasWon;
+    }
+
+    /**
+     * Sets the game over status.
+     * @param status The game over status.
+     */
+    public void setGameOver(boolean status) {
+        this.gameOver = status;
     }
 }

@@ -18,27 +18,39 @@ public class GameController {
    public void startGame() {
       System.out.println("Game setup complete. Players are ready to play.");
 
-      while (true) {
-         for (Player player : game.getPlayers()) {
-            System.out.println(player.getName() + "'s turn. Current position: " +
-                    player.getCurrentTile().getId() + ". Press Enter to roll the dice.");
-            scanner.nextLine();
-            int rollSum = game.rollDice();
-            System.out.println(player.getName() + " rolled a: " + rollSum);
+      while (!game.isGameOver()) {
+         System.out.println("Press Enter to play the next turn.");
+         scanner.nextLine();
 
-            Tile startingTile = player.getCurrentTile();
-            player.move(rollSum);
+         TurnResult turnResult = playTurn();
 
-            System.out.println(player.getName() + " moved from " + startingTile.getId() +
-                    " to " + player.getCurrentTile().getId());
+         Player player = turnResult.getPlayer();
+         System.out.println(player.getName() + " rolled a: " + turnResult.getRoll());
+         System.out.println(player.getName() + " moved from " + turnResult.getFromTile().getId() +
+                 " to " + turnResult.getToTile().getId());
 
-            if (player.getCurrentTile().getNextTile() == null) {
-               System.out.println(player.getName() + " has reached the end of the game!");
-               System.out.println(player.getName() + " wins!");
-               scanner.close();
-               return;
-            }
+         if (turnResult.hasWon()) {
+            System.out.println(player.getName() + " has reached the end of the game!");
+            System.out.println(player.getName() + " wins!");
          }
       }
+
+      scanner.close();
+   }
+
+   private TurnResult playTurn() {
+      Player player = game.getCurrentPlayer();
+      Tile fromTile = player.getCurrentTile();
+      int roll = game.rollDice();
+      Tile toTile = player.move(roll);
+      boolean hasWon = toTile.getNextTile() == null;
+
+      if (hasWon) {
+         game.setGameOver(true);
+      }
+
+      game.nextPlayer();
+
+      return new TurnResult(player, roll, fromTile, toTile, hasWon);
    }
 }
