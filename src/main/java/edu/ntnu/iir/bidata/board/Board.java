@@ -16,7 +16,7 @@ public class Board {
      */
     public void setTiles(Map<Integer, Tile> tiles) {
         if (tiles == null) {
-            throw new IllegalArgumentException("Tiles map cannot be null.");
+            throw new IllegalArgumentException("Tiles cannot be null.");
         }
         for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
             if (entry.getKey() == null || entry.getValue() == null) {

@@ -24,7 +24,7 @@ public class BoardGameApp {
         int choice = scanner.nextInt();
         String filePath;
 
-        // Use a switch statement to determine the board to load
+        // Use a switch statement to determine which board to load
         switch (choice) {
             case 1:
                 filePath = "src/main/resources/Board.json";
