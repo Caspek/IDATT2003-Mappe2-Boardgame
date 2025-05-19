@@ -35,22 +35,21 @@ public class PlayerLoader {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                 // Validate required fields
-                if (!jsonObject.has("name") || !jsonObject.has("playingPiece")) {
+                if (!jsonObject.has("name")) {
                     LOGGER.log(Level.WARNING, "Skipping player entry at index {0}: Missing required fields.", i);
                     continue;
                 }
 
                 String name = jsonObject.getString("name").trim();
-                String playingPiece = jsonObject.getString("playingPiece").trim();
 
                 // Ensure fields are not empty
-                if (name.isEmpty() || playingPiece.isEmpty()) {
-                    LOGGER.log(Level.WARNING, "Skipping player entry at index {0}: Empty name or playing piece.", i);
+                if (name.isEmpty()) {
+                    LOGGER.log(Level.WARNING, "Skipping player entry at index {0}: Empty name.", i);
                     continue;
                 }
 
                 // Create and add the player
-                Player player = new Player(name, playingPiece, game);
+                Player player = new Player(name, game);
                 players.add(player);
             }
         } catch (IOException e) {

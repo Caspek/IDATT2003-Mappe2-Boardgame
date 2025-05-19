@@ -39,11 +39,11 @@ public class BoardGame {
         this.dice = new DiceLogic(numberOfDice);
     }
 
-    public void addPlayer(String name, String piece) {
-        if (name == null || name.isEmpty() || piece == null || piece.isEmpty()) {
-            throw new IllegalArgumentException("Player name and piece cannot be null or empty.");
+    public void addPlayer(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Player name cannot be null or empty.");
         }
-        Player player = new Player(name, piece, this);
+        Player player = new Player(name, this);
         player.setCurrentTile(getStartingTile());
         players.add(player);
     }

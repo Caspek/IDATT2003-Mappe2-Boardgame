@@ -1,22 +1,17 @@
 [
   {
-    "name": "Casper",
-    "playingPiece": "TopHat"
+    "name": "TopHat"
   },
   {
-    "name": "Oskar",
-    "playingPiece": "Racecar"
+    "name": "Racecar"
   },
   {
-    "name": "Lars",
-    "playingPiece": "Thimble"
+    "name": "Thimble"
   },
   {
-    "name": "Henrik",
-    "playingPiece": "Wheelbarrow"
+    "name": "Wheelbarrow"
   },
   {
-    "name": "Peter",
-    "playingPiece": "Iron"
+    "name": "Iron"
   }
 ]

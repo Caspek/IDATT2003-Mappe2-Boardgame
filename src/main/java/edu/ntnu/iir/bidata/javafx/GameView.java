@@ -1,4 +1,4 @@
-package edu.ntnu.iir.bidata.game;
+package edu.ntnu.iir.bidata.javafx;
 
 import edu.ntnu.iir.bidata.board.BoardGame;
 import edu.ntnu.iir.bidata.game.TurnResult;

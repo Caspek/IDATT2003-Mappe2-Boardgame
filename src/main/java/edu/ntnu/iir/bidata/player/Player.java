@@ -5,13 +5,11 @@ import edu.ntnu.iir.bidata.tile.Tile;
 
 public class Player {
     private final String name;
-    private final String playingPiece;
     private BoardGame game;
     private Tile currentTile;
 
-    public Player(String name, String playingPiece, BoardGame game) {
+    public Player(String name, BoardGame game) {
         this.name = name;
-        this.playingPiece = playingPiece;
         this.game = game;
     }
 
@@ -21,10 +19,6 @@ public class Player {
 
     public void setCurrentTile(Tile currentTile) {
         this.currentTile = currentTile;
-    }
-
-    public String getPlayingPiece() {
-        return playingPiece;
     }
 
     public Tile move(int steps) {
