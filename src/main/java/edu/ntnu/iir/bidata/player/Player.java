@@ -7,6 +7,8 @@ public class Player {
     private final String name;
     private BoardGame game;
     private Tile currentTile;
+    private int lastSpecialMoveSteps = 0;
+    private String lastActionMessage = null;
 
     public Player(String name, BoardGame game) {
         this.name = name;
@@ -19,6 +21,20 @@ public class Player {
 
     public void setCurrentTile(Tile currentTile) {
         this.currentTile = currentTile;
+    }
+
+    public void setLastSpecialMoveSteps(int steps) {
+        this.lastSpecialMoveSteps = steps;
+    }
+    public int getLastSpecialMoveSteps() {
+        return lastSpecialMoveSteps;
+    }
+
+    public void setLastActionMessage(String message) {
+        this.lastActionMessage = message;
+    }
+    public String getLastActionMessage() {
+        return lastActionMessage;
     }
 
     public Tile move(int steps) {

@@ -66,6 +66,10 @@ public class BoardGame {
         }
 
         Player player = getCurrentPlayer();
+
+        player.setLastActionMessage(null);
+        player.setLastSpecialMoveSteps(0);
+
         Tile fromTile = player.getCurrentTile();
         int roll = dice.roll();
         Tile toTile = board.getNextTile(fromTile, roll);
@@ -90,7 +94,7 @@ public class BoardGame {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
 
-    private Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return players.get(currentPlayerIndex);
     }
 

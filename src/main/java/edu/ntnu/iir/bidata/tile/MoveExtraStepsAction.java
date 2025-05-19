@@ -24,14 +24,25 @@ public class MoveExtraStepsAction implements TileAction {
             return;
         }
 
-        String direction = steps > 0 ? "forward" : "back";
-        LOGGER.log(Level.INFO, "{0} encounters a special tile! Moving {1} steps {2}.",
-                new Object[]{player.getName(), Math.abs(steps), direction});
+        int specialTileId = player.getCurrentTile().getId();
+        String direction = steps > 0 ? "forward" : "backward";
+        String message = player.getName()
+                + " landed on a special tile! "
+                + specialTileId
+                + " Moving "
+                + Math.abs(steps)
+                + " steps "
+                + direction
+                + ".";
+        player.setLastSpecialMoveSteps(steps);
+        player.setLastActionMessage(message);
+        LOGGER.log(Level.INFO, message);
 
         if (steps < 0) {
-            moveToSpecificTile(player, player.getCurrentTile() != null ? player.getCurrentTile().getId() + steps : 1);
+            moveToSpecificTile(player, player.getCurrentTile().getId() + steps);
         } else {
-            player.move(steps);
+            Tile newTile = player.move(steps);
+            newTile.landPlayer(player);
         }
     }
 
@@ -54,6 +65,11 @@ public class MoveExtraStepsAction implements TileAction {
         player.setCurrentTile(targetTile);
         targetTile.landPlayer(player);
     }
+
+    public int getSteps() {
+        return steps;
+    }
 }
+
 
 
