@@ -9,7 +9,7 @@ import javafx.scene.layout.*;
 public class GameView {
     private final VBox root = new VBox(10);
     private final TextArea outputArea = new TextArea();
-    private final Button nextTurnButton = new Button("Neste tur");
+    private final Button nextTurnButton = new Button("Next turn");
     private final Label currentPlayerLabel = new Label();
 
     public GameView(BoardGame game) {
@@ -24,11 +24,11 @@ public class GameView {
             if (!game.isGameOver()) {
                 TurnResult result = game.playTurn();
 
-                outputArea.appendText(result.getPlayer().getName() + " kastet: " + result.getRoll() + "\n");
-                outputArea.appendText("Flyttet fra " + result.getFromTile().getId() + " til " + result.getToTile().getId() + "\n\n");
+                outputArea.appendText(result.getPlayer().getName() + " rolled: " + result.getRoll() + "\n");
+                outputArea.appendText("Moved from " + result.getFromTile().getId() + " to " + result.getToTile().getId() + "\n\n");
 
                 if (result.hasWon()) {
-                    outputArea.appendText(result.getPlayer().getName() + " har vunnet spillet!\n");
+                    outputArea.appendText(result.getPlayer().getName() + " has won the game!\n");
                     nextTurnButton.setDisable(true);
                 } else {
                     updateCurrentPlayer(game);
@@ -37,7 +37,7 @@ public class GameView {
         });
 
         root.getChildren().addAll(
-                new Label("Board Game i JavaFX"),
+                new Label("Board Game in JavaFX"),
                 currentPlayerLabel,
                 nextTurnButton,
                 outputArea
@@ -45,7 +45,7 @@ public class GameView {
     }
 
     private void updateCurrentPlayer(BoardGame game) {
-        currentPlayerLabel.setText("Tur: " + game.playTurn().getPlayer().getName());
+        currentPlayerLabel.setText("Turn: " + game.playTurn().getPlayer().getName());
     }
 
     public VBox getRoot() {

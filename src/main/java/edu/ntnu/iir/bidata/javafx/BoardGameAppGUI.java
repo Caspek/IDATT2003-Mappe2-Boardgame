@@ -58,7 +58,6 @@ public class BoardGameAppGUI extends Application {
             BoardGame game = BoardGameFactory.loadBoardFromFile(boardChoice);
             game.setDice(2);
 
-            // Hent valgte brikker
             List<String> selectedPieces = new ArrayList<>();
             for (Node node : pieceSelectorsBox.getChildren()) {
                 if (node instanceof ComboBox) {
@@ -94,7 +93,6 @@ public class BoardGameAppGUI extends Application {
         }
     }
 
-    // Viser feilmelding
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Invalid Input");
