@@ -14,21 +14,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Responsible for reading the board configuration from a JSON file.
+ * Responsible for reading and parsing board configurations from a JSON file.
+ * This class creates a map of tiles and links them based on the configuration
+ * provided in the JSON file. It also sets up special actions for tiles, such as
+ * moving extra steps or random teleportation.
  */
 public class BoardFileReader {
-    private final Board board;
-
-    public BoardFileReader(Board board) {
-        this.board = board;
-    }
-
-
 
     /**
      * Reads the board configuration from a JSON file and returns a map of tiles.
-     * @param filePath The path to the JSON file.
-     * @return A map of tile IDs to Tile objects.
+     * @param filePath The path to the JSON file containing the board configuration.
+     * @return A map of tile IDs to Tile objects, with all tiles linked and actions set.
+     * @throws JsonParsingException If the file cannot be read or the JSON is invalid.
      */
     public Map<Integer, Tile> readBoardFromFile(String filePath) {
         Map<Integer, Tile> tiles = new HashMap<>();
@@ -62,7 +59,7 @@ public class BoardFileReader {
                         int steps = tileObject.getInt("landAction");
                         currentTile.setLandAction(new MoveExtraStepsAction(steps));
                     } else if ("randomTeleport".equals(tileObject.getString("landAction"))) {
-                        currentTile.setLandAction(new RandomTeleportAction(board));
+                        currentTile.setLandAction(new RandomTeleportAction(null)); // No direct board reference.
                     }
                 }
             }

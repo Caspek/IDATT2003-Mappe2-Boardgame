@@ -1,7 +1,6 @@
 package edu.ntnu.iir.bidata.game;
 
 import edu.ntnu.iir.bidata.board.BoardGame;
-import edu.ntnu.iir.bidata.game.TurnResult;
 
 import java.util.Scanner;
 
@@ -17,7 +16,7 @@ public class GameController {
    public void startGame() {
       System.out.println("Game setup complete. Players are ready to play.");
 
-      while (!game.isGameOver()) {
+      while (game.isGameOver()) {
          System.out.println("Press Enter to play the next turn.");
          scanner.nextLine();
 

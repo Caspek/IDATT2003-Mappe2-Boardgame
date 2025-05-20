@@ -89,7 +89,7 @@ public class GameView implements BoardGameObserver {
         // Controls
         updateCurrentPlayer(game);
         nextTurnButton.setOnAction(e -> {
-            if (!game.isGameOver()) {
+            if (game.isGameOver()) {
                 TurnResult result = game.playTurn();
                 // roll and any messages are emitted via observer callbacks
                 updateCurrentPlayer(game);
@@ -134,7 +134,7 @@ public class GameView implements BoardGameObserver {
         outputArea.appendText(winner.getName() + " has won the game!\n");
         currentPlayerLabel.setText(winner.getName() + " wins!");
 
-        Button replayButton = new Button("Spill igjen");
+        Button replayButton = new Button("Play again");
         replayButton.setOnAction(e -> {
             javafx.application.Platform.runLater(() -> {
                 try {

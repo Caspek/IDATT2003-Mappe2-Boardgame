@@ -56,8 +56,8 @@ public class Board {
     }
 
     public Tile getNextTile(Tile currentTile, int roll) {
-        if (currentTile == null) {
-            throw new IllegalArgumentException("Current tile cannot be null.");
+        if (currentTile == null || !tiles.containsValue(currentTile)) {
+            throw new IllegalArgumentException("Current tile is invalid or does not belong to this board.");
         }
         Tile nextTile = currentTile;
         for (int i = 0; i < roll; i++) {
