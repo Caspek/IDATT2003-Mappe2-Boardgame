@@ -1,3 +1,4 @@
+
 package edu.ntnu.iir.bidata.javafx;
 
 import edu.ntnu.iir.bidata.board.BoardGame;
@@ -30,13 +31,10 @@ public class BoardGameAppGUI extends Application {
         Label playerCountLabel = new Label("Number of players (2-5):");
         Spinner<Integer> playerCountSpinner = new Spinner<>(2, 5, 2);
 
-        // Player piece selectors
+        // Piece selectors
         VBox pieceSelectorsBox = new VBox(10);
-        updatePieceSelectors(pieceSelectorsBox, 2); // initial count
-
-        playerCountSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
-            updatePieceSelectors(pieceSelectorsBox, newVal);
-        });
+        updatePieceSelectors(pieceSelectorsBox, 2);
+        playerCountSpinner.valueProperty().addListener((obs, oldVal, newVal) -> updatePieceSelectors(pieceSelectorsBox, newVal));
 
         // Start button
         Button startButton = new Button("Start Game");
@@ -48,9 +46,10 @@ public class BoardGameAppGUI extends Application {
                 startButton
         );
 
-        Scene scene = new Scene(root, 400, 450);
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Board Game Setup");
+        stage.sizeToScene();
         stage.show();
 
         startButton.setOnAction(e -> {
@@ -58,27 +57,25 @@ public class BoardGameAppGUI extends Application {
             BoardGame game = BoardGameFactory.loadBoardFromFile(boardChoice);
             game.setDice(2);
 
-            List<String> selectedPieces = new ArrayList<>();
+            List<String> selected = new ArrayList<>();
             for (Node node : pieceSelectorsBox.getChildren()) {
                 if (node instanceof ComboBox) {
-                    ComboBox<String> cb = (ComboBox<String>) node;
-                    String piece = cb.getValue();
-                    if (piece == null || selectedPieces.contains(piece)) {
+                    String piece = ((ComboBox<String>) node).getValue();
+                    if (piece == null || selected.contains(piece)) {
                         showAlert("Each player must select a unique piece.");
                         return;
                     }
-                    selectedPieces.add(piece);
+                    selected.add(piece);
                 }
             }
 
-            for (String name : selectedPieces) {
-                game.addPlayer(name);
-            }
+            for (String name : selected) game.addPlayer(name);
 
-            // Start game view
             GameView view = new GameView(game);
-            Scene gameScene = new Scene(view.getRoot(), 600, 500);
+            Scene gameScene = new Scene(view.getRoot());
             stage.setScene(gameScene);
+            stage.sizeToScene();
+            stage.centerOnScreen();
         });
     }
 
@@ -93,14 +90,13 @@ public class BoardGameAppGUI extends Application {
         }
     }
 
-    private void showAlert(String message) {
+    private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Invalid Input");
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
-
 
     public static void main(String[] args) {
         launch(args);

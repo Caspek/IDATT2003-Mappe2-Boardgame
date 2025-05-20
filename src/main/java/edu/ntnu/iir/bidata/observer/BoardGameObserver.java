@@ -5,5 +5,8 @@ import edu.ntnu.iir.bidata.tile.Tile;
 
 public interface BoardGameObserver {
     void onPlayerMoved(Player player, Tile fromTile, Tile toTile, int roll);
+
+    void onSpecialTile(Player player, Tile tile, String description);
+
     void onGameWon(Player winner);
 }

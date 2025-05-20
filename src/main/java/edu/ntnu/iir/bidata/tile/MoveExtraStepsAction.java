@@ -26,20 +26,21 @@ public class MoveExtraStepsAction implements TileAction {
 
         int specialTileId = player.getCurrentTile().getId();
         String direction = steps > 0 ? "forward" : "backward";
+        int targetTileId = Math.max(1, specialTileId + steps);
         String message = player.getName()
-                + " landed on a special tile! "
-                + specialTileId
-                + " Moving "
+                + " landed on a special tile! Moving "
                 + Math.abs(steps)
                 + " steps "
                 + direction
+                + " to tile "
+                + targetTileId
                 + ".";
         player.setLastSpecialMoveSteps(steps);
         player.setLastActionMessage(message);
         LOGGER.log(Level.INFO, message);
 
         if (steps < 0) {
-            moveToSpecificTile(player, player.getCurrentTile().getId() + steps);
+            moveToSpecificTile(player, targetTileId);
         } else {
             Tile newTile = player.move(steps);
             newTile.landPlayer(player);

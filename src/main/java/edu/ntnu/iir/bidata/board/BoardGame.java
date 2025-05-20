@@ -66,7 +66,6 @@ public class BoardGame {
         }
 
         Player player = getCurrentPlayer();
-
         player.setLastActionMessage(null);
         player.setLastSpecialMoveSteps(0);
 
@@ -74,12 +73,28 @@ public class BoardGame {
         int roll = dice.roll();
         Tile toTile = board.getNextTile(fromTile, roll);
 
-        notifyPlayerMoved(player, fromTile, toTile, roll);
-
         player.setCurrentTile(toTile);
         toTile.landPlayer(player);
 
-        boolean hasWon = toTile.isWinningTile();
+        // Always notify the initial movement
+        notifyPlayerMoved(player, fromTile, toTile, roll);
+
+        // Handle special tile actions if applicable
+        if (player.getLastActionMessage() != null) {
+            Tile specialTo = player.getCurrentTile();
+
+            if (!specialTo.equals(toTile)) {
+                notifyPlayerMoved(
+                        player,
+                        toTile,
+                        specialTo,
+                        player.getLastSpecialMoveSteps()
+                );
+            }
+            notifySpecialTile(player, specialTo, player.getLastActionMessage());
+        }
+
+        boolean hasWon = player.getCurrentTile().isWinningTile();
         if (hasWon) {
             gameOver = true;
             notifyGameWon(player);
@@ -89,6 +104,7 @@ public class BoardGame {
 
         return new TurnResult(player, roll, fromTile, player.getCurrentTile(), hasWon);
     }
+
 
     private void nextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
@@ -106,6 +122,10 @@ public class BoardGame {
         observers.remove(observer);
     }
 
+    public Collection<BoardGameObserver> getObservers() {
+        return Collections.unmodifiableSet(observers);
+    }
+
     private void notifyPlayerMoved(Player player, Tile from, Tile to, int roll) {
         for (BoardGameObserver o : observers) {
             o.onPlayerMoved(player, from, to, roll);
@@ -117,5 +137,15 @@ public class BoardGame {
             o.onGameWon(winner);
         }
     }
+    private void notifySpecialTile(Player player, Tile tile, String description) {
+        for (BoardGameObserver o : observers) {
+            o.onSpecialTile(player, tile, description);
+        }
+    }
+
+    public List<Player> getPlayers() {
+        return Collections.unmodifiableList(players);
+    }
+
 }
 

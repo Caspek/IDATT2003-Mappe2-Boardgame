@@ -17,7 +17,7 @@ public class BoardGameApp {
         System.out.print("Enter your choice (1-4): ");
 
         int choice = scanner.nextInt();
-        scanner.nextLine(); // Clear newline
+        scanner.nextLine();
 
         BoardGame game;
         try {

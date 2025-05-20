@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 public class RandomTeleportAction implements TileAction {
     private static final Logger LOGGER = Logger.getLogger(RandomTeleportAction.class.getName());
     private final Board board;
+    private final Random rand = new Random();
 
     public RandomTeleportAction(Board board) {
         if (board == null) {
@@ -30,7 +31,6 @@ public class RandomTeleportAction implements TileAction {
         }
 
         int specialTileId = player.getCurrentTile().getId();
-        // pick a random tile (excluding the last one)
         Random random = new Random();
         int randomTileId;
         do {
