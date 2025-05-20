@@ -27,22 +27,19 @@ public class BoardFileReader {
      * @return A map of tile IDs to Tile objects, with all tiles linked and actions set.
      * @throws JsonParsingException If the file cannot be read or the JSON is invalid.
      */
-    public Map<Integer, Tile> readBoardFromFile(String filePath) {
+    public Map<Integer, Tile> readBoardFromFile(String filePath, Board board) {
         Map<Integer, Tile> tiles = new HashMap<>();
         try {
-            // Read the JSON file content.
             String content = new String(Files.readAllBytes(Paths.get(filePath)));
             JSONObject jsonObject = new JSONObject(content);
             JSONArray tileArray = jsonObject.getJSONArray("tiles");
 
-            // Create Tile objects for each tile in the JSON file.
             for (int i = 0; i < tileArray.length(); i++) {
                 JSONObject tileObject = tileArray.getJSONObject(i);
                 int id = tileObject.getInt("id");
                 tiles.put(id, new Tile(id));
             }
 
-            // Link tiles and set land actions (e.g., ladders or snakes).
             for (int i = 0; i < tileArray.length(); i++) {
                 JSONObject tileObject = tileArray.getJSONObject(i);
                 int id = tileObject.getInt("id");
@@ -53,13 +50,12 @@ public class BoardFileReader {
                     currentTile.setNextTile(tiles.get(nextTileId));
                 }
 
-                // Set land actions for special tiles.
                 if (tileObject.has("landAction")) {
                     if (tileObject.get("landAction") instanceof Integer) {
                         int steps = tileObject.getInt("landAction");
                         currentTile.setLandAction(new MoveExtraStepsAction(steps));
                     } else if ("randomTeleport".equals(tileObject.getString("landAction"))) {
-                        currentTile.setLandAction(new RandomTeleportAction(null)); // No direct board reference.
+                        currentTile.setLandAction(new RandomTeleportAction(board));
                     }
                 }
             }

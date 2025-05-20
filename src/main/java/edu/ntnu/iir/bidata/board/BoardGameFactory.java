@@ -1,6 +1,5 @@
 package edu.ntnu.iir.bidata.board;
 
-import edu.ntnu.iir.bidata.dice.DiceLogic;
 import edu.ntnu.iir.bidata.tile.MoveExtraStepsAction;
 import edu.ntnu.iir.bidata.tile.QueueTileAction;
 import edu.ntnu.iir.bidata.tile.Tile;
@@ -14,14 +13,7 @@ public class BoardGameFactory {
 
     public static BoardGame createSimpleBoard() {
         BoardGame game = new BoardGame();
-        Map<Integer, Tile> tiles = new HashMap<>();
-
-        for (int i = 1; i <= 90; i++) {
-            tiles.put(i, new Tile(i));
-        }
-        for (int i = 1; i < 90; i++) {
-            tiles.get(i).setNextTile(tiles.get(i + 1));
-        }
+        Map<Integer, Tile> tiles = createAndLinkTiles(90);
 
         tiles.get(37).setLandAction(new MoveExtraStepsAction(9));
         tiles.get(15).setLandAction(new MoveExtraStepsAction(5));
@@ -35,14 +27,7 @@ public class BoardGameFactory {
 
     public static BoardGame createPainfulBoard() {
         BoardGame game = new BoardGame();
-        Map<Integer, Tile> tiles = new HashMap<>();
-
-        for (int i = 1; i <= 90; i++) {
-            tiles.put(i, new Tile(i));
-        }
-        for (int i = 1; i < 90; i++) {
-            tiles.get(i).setNextTile(tiles.get(i + 1));
-        }
+        Map<Integer, Tile> tiles = createAndLinkTiles(90);
 
         tiles.get(9).setLandAction(new MoveExtraStepsAction(-5));
         tiles.get(16).setLandAction(new MoveExtraStepsAction(-10));
@@ -61,15 +46,7 @@ public class BoardGameFactory {
 
     public static BoardGame createQueueBoard() {
         BoardGame game = new BoardGame();
-        Map<Integer, Tile> tiles = new HashMap<>();
-
-        for (int i = 1; i <= 30; i++) {
-            tiles.put(i, new Tile(i));
-        }
-
-        for (int i = 1; i < 30; i++) {
-            tiles.get(i).setNextTile(tiles.get(i + 1));
-        }
+        Map<Integer, Tile> tiles = createAndLinkTiles(30);
 
         tiles.get(10).setLandAction(new QueueTileAction());
         tiles.get(20).setLandAction(new QueueTileAction());
@@ -82,36 +59,51 @@ public class BoardGameFactory {
         return game;
     }
 
-
     public static BoardGame loadBoardFromFile(int choice) {
-        switch (choice) {
-            case 1:
-                return createSimpleBoard();
-            case 2:
-                return createPainfulBoard();
-            case 3: {
-                String filePath = BOARD_DIRECTORY + "Board.json";
-                return loadBoardFromFile(filePath);
-            }
-            case 4: {
-                String filePath = BOARD_DIRECTORY + "RandomBoard.json";
-                return loadBoardFromFile(filePath);
-            }
-            case 5: {
-                String filePath = BOARD_DIRECTORY + "ShortBoard.json";
-                return loadBoardFromFile(filePath);
-            }
-            case 6: {
-                return createQueueBoard();
-            }
-            default:
-                throw new IllegalArgumentException("Invalid board choice: " + choice);
+        try {
+            return switch (choice) {
+                case 1 -> createSimpleBoard();
+                case 2 -> createPainfulBoard();
+                case 3 -> loadBoardFromFile(BOARD_DIRECTORY + "Board.json");
+                case 4 -> loadBoardFromFile(BOARD_DIRECTORY + "RandomBoard.json");
+                case 5 -> loadBoardFromFile(BOARD_DIRECTORY + "ShortBoard.json");
+                case 6 -> createQueueBoard();
+                default ->
+                        throw new IllegalArgumentException("Invalid board choice: " + choice + ". Please select a valid option (1-6).");
+            };
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            return createSimpleBoard(); // Fallback to a default board
         }
     }
 
     private static BoardGame loadBoardFromFile(String filePath) {
         BoardGame game = new BoardGame();
-        game.loadBoard(filePath);
+        try {
+            game.loadBoard(filePath);
+            validateBoard(game.getBoardInternal());
+        } catch (Exception e) {
+            throw new IllegalStateException("Error loading the board configuration: " + filePath, e);
+        }
         return game;
+    }
+
+    private static Map<Integer, Tile> createAndLinkTiles(int numberOfTiles) {
+        Map<Integer, Tile> tiles = new HashMap<>();
+        for (int i = 1; i <= numberOfTiles; i++) {
+            tiles.put(i, new Tile(i));
+        }
+        for (int i = 1; i < numberOfTiles; i++) {
+            tiles.get(i).setNextTile(tiles.get(i + 1));
+        }
+        return tiles;
+    }
+
+    private static void validateBoard(Board board) {
+        for (Tile tile : board.getAllTiles()) {
+            if (tile.getNextTile() == null && !tile.isWinningTile()) {
+                throw new IllegalStateException("Invalid board configuration: Tile " + tile.getId() + " is missing a next tile.");
+            }
+        }
     }
 }

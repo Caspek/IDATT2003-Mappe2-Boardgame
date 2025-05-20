@@ -28,7 +28,7 @@ public class BoardGame {
      */
     public void loadBoard(String filePath) {
         BoardFileReader boardFileReader = new BoardFileReader();
-        board.setTiles(boardFileReader.readBoardFromFile(filePath));
+        board.setTiles(boardFileReader.readBoardFromFile(filePath, this.board));
     }
 
     /**
