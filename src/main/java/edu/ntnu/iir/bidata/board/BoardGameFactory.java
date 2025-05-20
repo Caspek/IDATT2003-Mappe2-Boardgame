@@ -2,6 +2,7 @@ package edu.ntnu.iir.bidata.board;
 
 import edu.ntnu.iir.bidata.dice.DiceLogic;
 import edu.ntnu.iir.bidata.tile.MoveExtraStepsAction;
+import edu.ntnu.iir.bidata.tile.QueueTileAction;
 import edu.ntnu.iir.bidata.tile.Tile;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class BoardGameFactory {
         tiles.get(45).setLandAction(new MoveExtraStepsAction(10));
 
         game.setTiles(tiles);
-        game.setDice(2);
+        game.setDice(2, false);
         return game;
     }
 
@@ -54,9 +55,33 @@ public class BoardGameFactory {
         tiles.get(80).setLandAction(new MoveExtraStepsAction(-15));
 
         game.setTiles(tiles);
-        game.setDice(1);
+        game.setDice(2, false);
         return game;
     }
+
+    public static BoardGame createQueueBoard() {
+        BoardGame game = new BoardGame();
+        Map<Integer, Tile> tiles = new HashMap<>();
+
+        for (int i = 1; i <= 30; i++) {
+            tiles.put(i, new Tile(i));
+        }
+
+        for (int i = 1; i < 30; i++) {
+            tiles.get(i).setNextTile(tiles.get(i + 1));
+        }
+
+        tiles.get(10).setLandAction(new QueueTileAction());
+        tiles.get(20).setLandAction(new QueueTileAction());
+
+        tiles.get(5).setLandAction(new MoveExtraStepsAction(5));
+        tiles.get(25).setLandAction(new MoveExtraStepsAction(-10));
+
+        game.setTiles(tiles);
+        game.setDice(1, true);
+        return game;
+    }
+
 
     public static BoardGame loadBoardFromFile(int choice) {
         switch (choice) {
@@ -75,6 +100,9 @@ public class BoardGameFactory {
             case 5: {
                 String filePath = BOARD_DIRECTORY + "ShortBoard.json";
                 return loadBoardFromFile(filePath);
+            }
+            case 6: {
+                return createQueueBoard();
             }
             default:
                 throw new IllegalArgumentException("Invalid board choice: " + choice);

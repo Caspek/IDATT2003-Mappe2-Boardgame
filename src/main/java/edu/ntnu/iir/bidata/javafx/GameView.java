@@ -1,11 +1,13 @@
 package edu.ntnu.iir.bidata.javafx;
 
 import edu.ntnu.iir.bidata.board.BoardGame;
+import edu.ntnu.iir.bidata.board.BoardGameFactory;
 import edu.ntnu.iir.bidata.observer.BoardGameObserver;
 import edu.ntnu.iir.bidata.game.TurnResult;
 import edu.ntnu.iir.bidata.player.Player;
 import edu.ntnu.iir.bidata.tile.Tile;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -25,8 +27,6 @@ import java.util.*;
  */
 public class GameView implements BoardGameObserver {
     private static final int TILE_SIZE = 50;
-    private static final int COLS = 0;
-    private static final int ROWS = 0;
 
     private final VBox root = new VBox(10);
     private final GridPane boardGrid = new GridPane();
@@ -38,8 +38,12 @@ public class GameView implements BoardGameObserver {
     private final List<Color> pieceColors = Arrays.asList(
             Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.PURPLE
     );
+    private int boardChoice;
+    private final BoardGame game;
 
-    public GameView(BoardGame game) {
+    public GameView(BoardGame game, int boardChoice) {
+        this.game = game;
+        this.boardChoice = boardChoice;
         root.setPadding(new Insets(15));
         Label title = new Label("Board Game (Grid View)");
 
@@ -130,8 +134,30 @@ public class GameView implements BoardGameObserver {
         outputArea.appendText(winner.getName() + " has won the game!\n");
         currentPlayerLabel.setText(winner.getName() + " wins!");
 
-        Button playAgainButton = new Button("Play Again");
-        playAgainButton.setOnAction(e -> {
+        Button replayButton = new Button("Spill igjen");
+        replayButton.setOnAction(e -> {
+            javafx.application.Platform.runLater(() -> {
+                try {
+                    BoardGame sameGame = BoardGameFactory.loadBoardFromFile(GameView.this.boardChoice);
+                    for (Player oldPlayer : game.getPlayers()) {
+                        sameGame.addPlayer(oldPlayer.getName());
+                    }
+                    sameGame.setDice(2, false);
+
+                    GameView newView = new GameView(sameGame, GameView.this.boardChoice);
+                    Scene newScene = new Scene(newView.getRoot(), 800, 600);
+                    Stage stage = new Stage();
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
+            ((Stage) root.getScene().getWindow()).close();
+        });
+
+        Button homeButton = new Button("Main menu");
+        homeButton.setOnAction(e -> {
             javafx.application.Platform.runLater(() -> {
                 try {
                     new BoardGameAppGUI().start(new Stage());
@@ -141,8 +167,11 @@ public class GameView implements BoardGameObserver {
             });
             ((Stage) root.getScene().getWindow()).close();
         });
-        ((VBox) nextTurnButton.getParent()).getChildren().add(playAgainButton);
+
+        VBox buttonBox = new VBox(10, replayButton, homeButton);
+        ((VBox) nextTurnButton.getParent()).getChildren().add(buttonBox);
     }
+
 
 
     public VBox getRoot() { return root; }

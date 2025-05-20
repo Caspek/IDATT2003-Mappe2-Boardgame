@@ -24,7 +24,12 @@ public class BoardGameAppGUI extends Application {
         // Board selection
         Label boardLabel = new Label("Choose board:");
         ComboBox<String> boardSelector = new ComboBox<>();
-        boardSelector.getItems().addAll("1. Simple", "2. Painful", "3. Standard", "4. Teleportation", "5. Short");
+        boardSelector.getItems().addAll("1. Simple"
+                , "2. Painful"
+                , "3. Standard"
+                , "4. Teleportation"
+                , "5. Short"
+                , "6. Queue");
         boardSelector.getSelectionModel().selectFirst();
 
         // Player count
@@ -55,7 +60,11 @@ public class BoardGameAppGUI extends Application {
         startButton.setOnAction(e -> {
             int boardChoice = boardSelector.getSelectionModel().getSelectedIndex() + 1;
             BoardGame game = BoardGameFactory.loadBoardFromFile(boardChoice);
-            game.setDice(2);
+
+            // Automatically set 2 dice for JSON boards without DiceLogic
+            if (game.getDice() == null) {
+                game.setDice(2, false);
+            }
 
             List<String> selected = new ArrayList<>();
             for (Node node : pieceSelectorsBox.getChildren()) {
@@ -71,8 +80,8 @@ public class BoardGameAppGUI extends Application {
 
             for (String name : selected) game.addPlayer(name);
 
-            GameView view = new GameView(game);
-            Scene gameScene = new Scene(view.getRoot());
+            GameView view = new GameView(game, boardChoice);
+            Scene gameScene = new Scene(view.getRoot(), 800, 600);
             stage.setScene(gameScene);
             stage.sizeToScene();
             stage.centerOnScreen();

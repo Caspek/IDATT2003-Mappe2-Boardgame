@@ -27,7 +27,7 @@ public class BoardGameApp {
             return;
         }
 
-        game.setDice(2);
+        game.setDice(2, false);
 
         String playersFilePath = "src/main/resources/players.json";
         game.loadPlayers(playersFilePath);

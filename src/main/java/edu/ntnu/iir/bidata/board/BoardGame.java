@@ -35,7 +35,10 @@ public class BoardGame {
         return board.getTile(1);
     }
 
-    public void setDice(int numberOfDice) {
+    public void setDice(int numberOfDice, boolean isQueueBoard) {
+        if (isQueueBoard && numberOfDice != 1) {
+            throw new IllegalArgumentException("QueueBoard only allows 1 die.");
+        }
         this.dice = new DiceLogic(numberOfDice);
     }
 
@@ -145,6 +148,10 @@ public class BoardGame {
 
     public List<Player> getPlayers() {
         return Collections.unmodifiableList(players);
+    }
+
+    public Dice getDice() {
+        return dice;
     }
 
 }
