@@ -24,7 +24,7 @@ public class BoardGameAppGUI extends Application {
         // Board selection
         Label boardLabel = new Label("Choose board:");
         ComboBox<String> boardSelector = new ComboBox<>();
-        boardSelector.getItems().addAll("1. Simple", "2. Painful", "3. Standard", "4. Teleportation");
+        boardSelector.getItems().addAll("1. Simple", "2. Painful", "3. Standard", "4. Teleportation", "5. Short");
         boardSelector.getSelectionModel().selectFirst();
 
         // Player count
@@ -46,7 +46,7 @@ public class BoardGameAppGUI extends Application {
                 startButton
         );
 
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root,200,400);
         stage.setScene(scene);
         stage.setTitle("Board Game Setup");
         stage.sizeToScene();

@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.util.*;
 
@@ -24,8 +25,8 @@ import java.util.*;
  */
 public class GameView implements BoardGameObserver {
     private static final int TILE_SIZE = 50;
-    private static final int COLS = 10;
-    private static final int ROWS = 8;
+    private static final int COLS = 0;
+    private static final int ROWS = 0;
 
     private final VBox root = new VBox(10);
     private final GridPane boardGrid = new GridPane();
@@ -46,6 +47,10 @@ public class GameView implements BoardGameObserver {
         boardGrid.setHgap(2);
         boardGrid.setVgap(2);
         List<Tile> tiles = new ArrayList<>(game.getBoardInternal().getAllTiles());
+        int totalTiles = tiles.size();
+        int COLS = 10;
+        int ROWS = (int) Math.ceil((double) totalTiles / COLS);
+
         tiles.sort(Comparator.comparingInt(Tile::getId));
         for (Tile t : tiles) {
             int id = t.getId();
@@ -124,7 +129,21 @@ public class GameView implements BoardGameObserver {
         nextTurnButton.setDisable(true);
         outputArea.appendText(winner.getName() + " has won the game!\n");
         currentPlayerLabel.setText(winner.getName() + " wins!");
+
+        Button playAgainButton = new Button("Play Again");
+        playAgainButton.setOnAction(e -> {
+            javafx.application.Platform.runLater(() -> {
+                try {
+                    new BoardGameAppGUI().start(new Stage());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
+            ((Stage) root.getScene().getWindow()).close();
+        });
+        ((VBox) nextTurnButton.getParent()).getChildren().add(playAgainButton);
     }
+
 
     public VBox getRoot() { return root; }
 }

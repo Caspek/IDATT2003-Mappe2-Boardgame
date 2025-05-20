@@ -72,6 +72,10 @@ public class BoardGameFactory {
                 String filePath = BOARD_DIRECTORY + "RandomBoard.json";
                 return loadBoardFromFile(filePath);
             }
+            case 5: {
+                String filePath = BOARD_DIRECTORY + "ShortBoard.json";
+                return loadBoardFromFile(filePath);
+            }
             default:
                 throw new IllegalArgumentException("Invalid board choice: " + choice);
         }
