@@ -3,6 +3,10 @@ package edu.ntnu.iir.bidata.dice;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The DiceLogic class implements the Dice interface and provides functionality to roll multiple dice.
+ * It manages a list of Die objects and calculates the total sum of their rolls.
+ */
 public class DiceLogic implements Dice {
     private final List<Die> dice;
 

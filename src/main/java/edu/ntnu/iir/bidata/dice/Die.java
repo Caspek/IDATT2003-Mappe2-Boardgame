@@ -2,6 +2,10 @@ package edu.ntnu.iir.bidata.dice;
 
 import java.util.Random;
 
+/**
+ * The Die class represents a single die with a maximum value.
+ * It provides methods to roll the die and get a random value between 1 and the maximum value.
+ */
 public class Die {
     private static final Random random = new Random(); // Shared Random instance
     private final int maxValue;

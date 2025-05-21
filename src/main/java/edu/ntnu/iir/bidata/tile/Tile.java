@@ -2,7 +2,6 @@ package edu.ntnu.iir.bidata.tile;
 
 import edu.ntnu.iir.bidata.player.Player;
 
-import java.util.logging.Logger;
 
 /**
  * Represents a tile on the board that a player can land on or leave.

@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The Board class represents a game board containing tiles.
+ * It provides methods to set tiles, retrieve all tiles, and get a specific tile by its ID.
+ */
 public class Board {
     private final Map<Integer, Tile> tiles = new HashMap<>(); // Stores all tiles by their ID.
 
@@ -55,6 +59,13 @@ public class Board {
         return tile;
     }
 
+    /**
+     * Gets the next tile based on the current tile and the number of steps rolled.
+     * @param currentTile The current tile the player is on.
+     * @param roll The number of steps rolled.
+     * @return The next tile after rolling the specified number of steps.
+     * @throws IllegalArgumentException if the current tile is invalid or does not belong to this board.
+     */
     public Tile getNextTile(Tile currentTile, int roll) {
         if (currentTile == null || !tiles.containsValue(currentTile)) {
             throw new IllegalArgumentException("Current tile is invalid or does not belong to this board.");

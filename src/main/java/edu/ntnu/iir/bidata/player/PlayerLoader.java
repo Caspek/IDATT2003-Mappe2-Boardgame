@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The PlayerLoader class is responsible for loading player names or pieces from a JSON file.
+ * It provides a method to read the file and extract player names, handling any potential errors.
+ */
 public class PlayerLoader {
 
     private static final Logger LOGGER = Logger.getLogger(PlayerLoader.class.getName());
