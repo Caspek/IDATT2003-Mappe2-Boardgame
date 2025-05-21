@@ -23,25 +23,39 @@ import javafx.stage.Stage;
 import java.util.*;
 
 /**
- * JavaFX view that also displays special-tile messages and moves extra steps immediately.
+ * Represents the main game view in the JavaFX application.
+ * This class displays the game board, player pieces, and controls for gameplay.
+ * It also observes the game state and updates the UI accordingly.
  */
 public class GameView implements BoardGameObserver {
-    private static final int TILE_SIZE = 50;
-
+    private final BoardGame game;
+    private final int boardChoice;
     private final VBox root = new VBox(10);
     private final GridPane boardGrid = new GridPane();
-    private final TextArea outputArea = new TextArea();
-    private final Button nextTurnButton = new Button("Next turn");
-    private final Label currentPlayerLabel = new Label();
     private final Map<Integer, StackPane> tilePanes = new HashMap<>();
     private final Map<Player, Circle> pieceNodes = new HashMap<>();
-    private final List<Color> pieceColors = Arrays.asList(
-            Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.PURPLE
-    );
-    private int boardChoice;
-    private final BoardGame game;
+    private final Label currentPlayerLabel = new Label();
+    private final Button nextTurnButton = new Button("Next Turn");
+    private final TextArea outputArea = new TextArea();
+    private static final int TILE_SIZE = 50;
+    private static final List<Color> pieceColors = List.of(Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.PURPLE);
 
+    /**
+     * Constructs a new GameView instance.
+     *
+     * @param game        The {@link BoardGame} instance representing the current game state.
+     * @param boardChoice The board configuration choice selected by the user.
+     * @throws IllegalArgumentException if the game is null.
+     * @throws IllegalStateException    if the game board or starting tile is not initialized.
+     */
     public GameView(BoardGame game, int boardChoice) {
+        if (game == null) {
+            throw new IllegalArgumentException("Game cannot be null.");
+        }
+        if (game.getBoardInternal() == null || game.getStartingTile() == null) {
+            throw new IllegalStateException("Game board or starting tile is not initialized.");
+        }
+
         this.game = game;
         this.boardChoice = boardChoice;
         root.setPadding(new Insets(15));
@@ -89,10 +103,16 @@ public class GameView implements BoardGameObserver {
         // Controls
         updateCurrentPlayer(game);
         nextTurnButton.setOnAction(e -> {
-            if (game.isGameOver()) {
+            if (game == null || game.isGameOver() == false) {
+                outputArea.appendText("Game is not in a valid state to proceed.\n");
+                return;
+            }
+            try {
                 TurnResult result = game.playTurn();
-                // roll and any messages are emitted via observer callbacks
                 updateCurrentPlayer(game);
+            } catch (Exception ex) {
+                outputArea.appendText("Error during turn: " + ex.getMessage() + "\n");
+                ex.printStackTrace();
             }
         });
 
@@ -105,29 +125,65 @@ public class GameView implements BoardGameObserver {
         root.getChildren().addAll(title, mainBox);
     }
 
+    /**
+     * Updates the label to display the current player's turn.
+     *
+     * @param game The {@link BoardGame} instance representing the current game state.
+     */
     private void updateCurrentPlayer(BoardGame game) {
         currentPlayerLabel.setText("Turn: " + game.getCurrentPlayer().getName());
     }
 
-    /** Fired for each movement, including extra steps. */
+    /**
+     * Handles the event when a player moves to a new tile.
+     *
+     * @param player   The player who moved.
+     * @param fromTile The tile the player moved from.
+     * @param toTile   The tile the player moved to.
+     * @param roll     The dice roll that determined the move.
+     */
     @Override
     public void onPlayerMoved(Player player, Tile fromTile, Tile toTile, int roll) {
-        Circle c = pieceNodes.get(player);
-        tilePanes.get(fromTile.getId()).getChildren().remove(c);
-        tilePanes.get(toTile.getId()).getChildren().add(c);
-        outputArea.appendText(
-                player.getName() + " rolled a " + roll + ",\n" +
-                        "moved from " + fromTile.getId() + " to " + toTile.getId() + "\n\n"
-        );
+        try {
+            Circle c = pieceNodes.get(player);
+            if (c == null || fromTile == null || toTile == null) {
+                throw new IllegalStateException("Invalid player or tile data.");
+            }
+            tilePanes.get(fromTile.getId()).getChildren().remove(c);
+            tilePanes.get(toTile.getId()).getChildren().add(c);
+            outputArea.appendText(
+                    player.getName() + " rolled a " + roll + ",\n" +
+                            "moved from " + fromTile.getId() + " to " + toTile.getId() + "\n\n"
+            );
+        } catch (Exception ex) {
+            outputArea.appendText("Error updating player movement: " + ex.getMessage() + "\n");
+            ex.printStackTrace();
+        }
     }
 
+    /**
+     * Handles the event when a player lands on a special tile.
+     *
+     * @param player  The player who landed on the special tile.
+     * @param tile    The special tile.
+     * @param message The message associated with the special tile.
+     */
     @Override
     public void onSpecialTile(Player player, Tile tile, String message) {
-        outputArea.appendText(message + "\n\n");
+        try {
+            outputArea.appendText(message + "\n\n");
+        } catch (Exception ex) {
+            outputArea.appendText("Error displaying special tile message: " + ex.getMessage() + "\n");
+            ex.printStackTrace();
+        }
     }
 
-
-
+    /**
+     * Handles the event when a player wins the game.
+     * Gives the option to either play again or return to the main menu.
+     *
+     * @param winner The player who won the game.
+     */
     @Override
     public void onGameWon(Player winner) {
         nextTurnButton.setDisable(true);
@@ -136,7 +192,7 @@ public class GameView implements BoardGameObserver {
 
         Button replayButton = new Button("Play again");
         replayButton.setOnAction(e -> {
-            javafx.application.Platform.runLater(() -> {
+            new Thread(() -> {
                 try {
                     BoardGame sameGame = BoardGameFactory.loadBoardFromFile(GameView.this.boardChoice);
                     for (Player oldPlayer : game.getPlayers()) {
@@ -144,15 +200,18 @@ public class GameView implements BoardGameObserver {
                     }
                     sameGame.setDice(2, false);
 
-                    GameView newView = new GameView(sameGame, GameView.this.boardChoice);
-                    Scene newScene = new Scene(newView.getRoot(), 800, 600);
-                    Stage stage = new Stage();
-                    stage.setScene(newScene);
-                    stage.show();
+                    javafx.application.Platform.runLater(() -> {
+                        GameView newView = new GameView(sameGame, GameView.this.boardChoice);
+                        Scene newScene = new Scene(newView.getRoot(), 800, 600);
+                        Stage stage = new Stage();
+                        stage.setScene(newScene);
+                        stage.show();
+                    });
                 } catch (Exception ex) {
+                    javafx.application.Platform.runLater(() -> outputArea.appendText("Error replaying game: " + ex.getMessage() + "\n"));
                     ex.printStackTrace();
                 }
-            });
+            }).start();
             ((Stage) root.getScene().getWindow()).close();
         });
 
@@ -172,7 +231,12 @@ public class GameView implements BoardGameObserver {
         ((VBox) nextTurnButton.getParent()).getChildren().add(buttonBox);
     }
 
-
-
-    public VBox getRoot() { return root; }
+    /**
+     * Returns the root layout of the game view.
+     *
+     * @return The root {@link VBox} layout.
+     */
+    public VBox getRoot() {
+        return root;
+    }
 }
