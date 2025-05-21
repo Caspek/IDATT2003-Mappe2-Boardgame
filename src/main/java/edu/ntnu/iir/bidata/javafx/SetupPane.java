@@ -1,5 +1,6 @@
 package edu.ntnu.iir.bidata.javafx;
 
+import edu.ntnu.iir.bidata.player.PlayerLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -7,14 +8,21 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The SetupPane class represents the setup screen for the board game.
+ * It allows users to select the board configuration, the number of players,
+ * and the pieces for each player.
+ */
 public class SetupPane extends VBox {
     private final ComboBox<String> boardSelector = new ComboBox<>();
-    private final Spinner<Integer> playerCountSpinner = new Spinner<>(2, 5, 2);
     private final VBox pieceSelectorsBox = new VBox(10);
 
+    /**
+     * Constructs a new SetupPane instance.
+     * Initializes the UI components for board selection, player count, and piece selection.
+     */
     public SetupPane() {
         super(10);
         setPadding(new Insets(20));
@@ -26,6 +34,7 @@ public class SetupPane extends VBox {
 
         // Player count
         Label playerCountLabel = new Label("Number of players (2-5):");
+        Spinner<Integer> playerCountSpinner = new Spinner<>(2, 5, 2);
         playerCountSpinner.valueProperty().addListener((obs, oldVal, newVal) -> updatePieceSelectors(newVal));
 
         // Piece selectors
@@ -38,9 +47,14 @@ public class SetupPane extends VBox {
         );
     }
 
+    /**
+     * Updates the piece selectors based on the number of players.
+     *
+     * @param count The number of players.
+     */
     private void updatePieceSelectors(int count) {
         pieceSelectorsBox.getChildren().clear();
-        List<String> pieces = Arrays.asList("TopHat", "Racecar", "Thimble", "Wheelbarrow", "Iron");
+        List<String> pieces = PlayerLoader.loadPlayerNamesFromFile("src/main/resources/Players.json");
         for (int i = 0; i < count; i++) {
             ComboBox<String> cb = new ComboBox<>();
             cb.getItems().addAll(pieces);
@@ -49,16 +63,25 @@ public class SetupPane extends VBox {
         }
     }
 
+    /**
+     * Gets the selected board configuration.
+     *
+     * @return The index of the selected board configuration (1-based).
+     */
     public int getBoardChoice() {
         return boardSelector.getSelectionModel().getSelectedIndex() + 1;
     }
 
+    /**
+     * Gets the selected pieces for all players.
+     *
+     * @return A list of selected pieces.
+     */
     public List<String> getSelectedPieces() {
         List<String> selectedPieces = new ArrayList<>();
         for (var node : pieceSelectorsBox.getChildren()) {
-            if (node instanceof ComboBox) {
-                ComboBox<String> cb = (ComboBox<String>) node;
-                selectedPieces.add(cb.getValue());
+            if (node instanceof ComboBox<?> cb && cb.getValue() instanceof String) {
+                selectedPieces.add((String) cb.getValue());
             }
         }
         return selectedPieces;

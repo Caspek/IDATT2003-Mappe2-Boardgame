@@ -4,7 +4,6 @@ import edu.ntnu.iir.bidata.dice.Dice;
 import edu.ntnu.iir.bidata.dice.DiceLogic;
 import edu.ntnu.iir.bidata.observer.BoardGameObserver;
 import edu.ntnu.iir.bidata.player.Player;
-import edu.ntnu.iir.bidata.player.PlayerLoader;
 import edu.ntnu.iir.bidata.tile.Tile;
 import edu.ntnu.iir.bidata.game.TurnResult;
 
@@ -80,18 +79,6 @@ public class BoardGame {
         Player player = new Player(name, this);
         player.setCurrentTile(getStartingTile());
         players.add(player);
-    }
-
-    /**
-     * Loads players from a file and adds them to the game.
-     * @param filePath The path to the file containing player data.
-     */
-    public void loadPlayers(String filePath) {
-        List<Player> loaded = PlayerLoader.loadPlayersFromFile(filePath, this);
-        for (Player player : loaded) {
-            player.setCurrentTile(getStartingTile());
-        }
-        players.addAll(loaded);
     }
 
     /**

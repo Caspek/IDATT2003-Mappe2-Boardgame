@@ -1,6 +1,5 @@
 package edu.ntnu.iir.bidata.player;
 
-import edu.ntnu.iir.bidata.board.BoardGame;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,46 +16,34 @@ public class PlayerLoader {
     private static final Logger LOGGER = Logger.getLogger(PlayerLoader.class.getName());
 
     /**
-     * Loads players from a JSON file and associates them with the given game.
+     * Loads player names (or pieces) from a JSON file for GUI purposes.
      * @param filePath The path to the JSON file containing player data.
-     * @param game The game to associate the players with.
-     * @return A list of players loaded from the file.
+     * @return A list of player names or pieces.
      */
-    public static List<Player> loadPlayersFromFile(String filePath, BoardGame game) {
-        List<Player> players = new ArrayList<>();
+    public static List<String> loadPlayerNamesFromFile(String filePath) {
+        List<String> playerNames = new ArrayList<>();
         try {
-            // Read the file content
             String content = new String(Files.readAllBytes(Paths.get(filePath)));
-
-            // Parse the JSON array
             JSONArray jsonArray = new JSONArray(content);
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                // Validate required fields
                 if (!jsonObject.has("name")) {
                     LOGGER.log(Level.WARNING, "Skipping player entry at index {0}: Missing required fields.", i);
                     continue;
                 }
 
                 String name = jsonObject.getString("name").trim();
-
-                // Ensure fields are not empty
-                if (name.isEmpty()) {
-                    LOGGER.log(Level.WARNING, "Skipping player entry at index {0}: Empty name.", i);
-                    continue;
+                if (!name.isEmpty()) {
+                    playerNames.add(name);
                 }
-
-                // Create and add the player
-                Player player = new Player(name, game);
-                players.add(player);
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to read the file: " + filePath, e);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "An unexpected error occurred while loading players.", e);
+            LOGGER.log(Level.SEVERE, "An unexpected error occurred while loading player names.", e);
         }
-        return players;
+        return playerNames;
     }
 }

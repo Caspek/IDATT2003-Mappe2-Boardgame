@@ -6,10 +6,20 @@ import edu.ntnu.iir.bidata.player.Player;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The MoveExtraStepsAction class represents a special tile action
+ * that moves a player a specified number of steps forward or backward.
+ */
 public class MoveExtraStepsAction implements TileAction {
     private static final Logger LOGGER = Logger.getLogger(MoveExtraStepsAction.class.getName());
     private final int steps;
 
+    /**
+     * Constructs a MoveExtraStepsAction with the specified number of steps.
+     *
+     * @param steps The number of steps to move. Positive for forward, negative for backward.
+     * @throws IllegalArgumentException if steps is zero.
+     */
     public MoveExtraStepsAction(int steps) {
         if (steps == 0) {
             throw new IllegalArgumentException("Steps cannot be zero.");
@@ -17,6 +27,11 @@ public class MoveExtraStepsAction implements TileAction {
         this.steps = steps;
     }
 
+    /**
+     * Executes the action for the given player, moving them the specified number of steps.
+     *
+     * @param player The player to move.
+     */
     @Override
     public void execute(Player player) {
         if (player == null) {
@@ -47,6 +62,12 @@ public class MoveExtraStepsAction implements TileAction {
         }
     }
 
+    /**
+     * Moves the player to a specific tile based on the target tile ID.
+     *
+     * @param player   The player to move.
+     * @param targetId The ID of the target tile.
+     */
     private void moveToSpecificTile(Player player, int targetId) {
         if (player.getCurrentTile() == null) {
             LOGGER.log(Level.SEVERE, "Player's current tile is null.");
@@ -66,7 +87,6 @@ public class MoveExtraStepsAction implements TileAction {
         player.setCurrentTile(targetTile);
         targetTile.landPlayer(player);
     }
-
 }
 
 

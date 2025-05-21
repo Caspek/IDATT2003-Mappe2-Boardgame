@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class TurnResult {
     private static final int MIN_ROLL = 1;
-    private static final int MAX_ROLL = 6;
+    private static final int MAX_ROLL = 12;
 
     private final Player player;
     private final int roll;
