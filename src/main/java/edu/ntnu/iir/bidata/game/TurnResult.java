@@ -2,18 +2,34 @@ package edu.ntnu.iir.bidata.game;
 
 import edu.ntnu.iir.bidata.player.Player;
 import edu.ntnu.iir.bidata.tile.Tile;
+
 import java.util.Objects;
 
 /**
  * Represents the result of a single turn in the game.
+ * This class is immutable and contains information about the player, dice roll,
+ * the tiles involved in the move, and whether the player has won.
  */
 public class TurnResult {
+    private static final int MIN_ROLL = 1;
+    private static final int MAX_ROLL = 6;
+
     private final Player player;
     private final int roll;
     private final Tile fromTile;
     private final Tile toTile;
     private final boolean hasWon;
 
+    /**
+     * Constructs a new TurnResult instance.
+     *
+     * @param player   The player who took the turn.
+     * @param roll     The dice roll for the turn.
+     * @param fromTile The tile the player moved from.
+     * @param toTile   The tile the player moved to.
+     * @param hasWon   Whether the player has won the game.
+     * @throws IllegalArgumentException if any parameter is null, or if the roll is out of range.
+     */
     public TurnResult(Player player, int roll, Tile fromTile, Tile toTile, boolean hasWon) {
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null.");
@@ -24,8 +40,8 @@ public class TurnResult {
         if (toTile == null) {
             throw new IllegalArgumentException("ToTile cannot be null.");
         }
-        if (roll < 1) {
-            throw new IllegalArgumentException("Roll must be greater than or equal to 1.");
+        if (roll < MIN_ROLL || roll > MAX_ROLL) {
+            throw new IllegalArgumentException("Roll must be between " + MIN_ROLL + " and " + MAX_ROLL + ".");
         }
 
         this.player = player;
@@ -35,24 +51,13 @@ public class TurnResult {
         this.hasWon = hasWon;
     }
 
+    /**
+     * Gets the player who took the turn.
+     *
+     * @return The player.
+     */
     public Player getPlayer() {
         return player;
-    }
-
-    public int getRoll() {
-        return roll;
-    }
-
-    public Tile getFromTile() {
-        return fromTile;
-    }
-
-    public Tile getToTile() {
-        return toTile;
-    }
-
-    public boolean hasWon() {
-        return hasWon;
     }
 
     @Override

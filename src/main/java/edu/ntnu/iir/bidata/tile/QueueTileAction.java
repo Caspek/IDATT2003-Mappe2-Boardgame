@@ -28,7 +28,4 @@ public class QueueTileAction implements TileAction {
         }
     }
 
-    public void clear() {
-        currentOccupant = null;
-    }
 }

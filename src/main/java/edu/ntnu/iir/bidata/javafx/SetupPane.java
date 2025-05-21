@@ -53,10 +53,6 @@ public class SetupPane extends VBox {
         return boardSelector.getSelectionModel().getSelectedIndex() + 1;
     }
 
-    public int getPlayerCount() {
-        return playerCountSpinner.getValue();
-    }
-
     public List<String> getSelectedPieces() {
         List<String> selectedPieces = new ArrayList<>();
         for (var node : pieceSelectorsBox.getChildren()) {

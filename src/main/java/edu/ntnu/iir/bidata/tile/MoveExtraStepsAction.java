@@ -67,9 +67,6 @@ public class MoveExtraStepsAction implements TileAction {
         targetTile.landPlayer(player);
     }
 
-    public int getSteps() {
-        return steps;
-    }
 }
 
 
