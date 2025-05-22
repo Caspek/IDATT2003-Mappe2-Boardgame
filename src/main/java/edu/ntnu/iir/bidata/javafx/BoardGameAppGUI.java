@@ -14,6 +14,7 @@ import javafx.stage.Stage;
  * This class handles the setup screen, user input validation, and transitions to the game view.
  */
 
+@SuppressWarnings("checkstyle:AbbreviationAsWordInName")
 public class BoardGameAppGUI extends Application {
 
   /**
