@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TurnResultTest {
+class TurnResultTest {
 
     @Test
     void testConstructorAndGetters() {

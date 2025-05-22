@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BoardFileReaderTest {
+class BoardFileReaderTest {
 
     @Test
     void testReadValidBoardFile() {

@@ -3,7 +3,7 @@ package edu.ntnu.iir.bidata.dice;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DieTest {
+class DieTest {
 
     @Test
     public void testRollReturnsValueWithinRange() {

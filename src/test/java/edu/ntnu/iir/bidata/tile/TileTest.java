@@ -3,7 +3,7 @@ package edu.ntnu.iir.bidata.tile;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TileTest {
+class TileTest {
 
     @Test
     public void testTileLinking() {
