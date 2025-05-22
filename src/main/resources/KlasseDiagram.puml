@@ -1,0 +1,59 @@
+@startuml
+class Player {
+    - name: String
+    - currentTile: Tile
+    - game: Game
+    - lastActionMessage: String
+    + setCurrentTile(tile: Tile): void
+    + getCurrentTile(): Tile
+    + setLastActionMessage(message: String): void
+    + getLastActionMessage(): String
+}
+
+class Tile {
+    - id: int
+    - nextTile: Tile
+    - landAction: TileAction
+    + landPlayer(player: Player): void
+    + leavePlayer(player: Player): void
+}
+
+interface TileAction {
+    + execute(player: Player): void
+}
+
+class MoveExtraStepsAction implements TileAction {
+    - steps: int
+    + execute(player: Player): void
+}
+
+class RandomTeleportAction implements TileAction {
+    - board: Board
+    + execute(player: Player): void
+}
+
+class QueueTileAction implements TileAction {
+    - currentOccupant: Player
+    + execute(player: Player): void
+}
+
+class Game {
+    - startingTile: Tile
+    + getStartingTile(): Tile
+}
+
+class Board {
+    - tiles: List<Tile>
+    + getAllTiles(): List<Tile>
+    + getTile(id: int): Tile
+}
+
+Player --> Tile : "currentTile"
+Tile --> TileAction : "landAction"
+TileAction <|.. MoveExtraStepsAction
+TileAction <|.. RandomTeleportAction
+TileAction <|.. QueueTileAction
+Player --> Game : "game"
+Game --> Tile : "startingTile"
+Board --> Tile : "tiles"
+@enduml

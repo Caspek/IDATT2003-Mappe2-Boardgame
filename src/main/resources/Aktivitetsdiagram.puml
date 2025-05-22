@@ -1,0 +1,40 @@
+@startuml
+start
+
+:Spiller lander på en tile;
+if (Tile har en landAction?) then (Ja)
+    :Utfør landAction;
+    if (LandAction er MoveExtraSteps?) then (Ja)
+        :Flytt spiller antall steg;
+        if (Steg er negative?) then (Ja)
+            :Flytt til spesifikk tile;
+        else (Nei)
+            :Flytt fremover og land på ny tile;
+        endif
+    else (Nei)
+        if (LandAction er RandomTeleport?) then (Ja)
+            :Teleport spiller til tilfeldig tile;
+        else (Nei)
+            if (LandAction er Queue?) then (Ja)
+                if (Tile er opptatt?) then (Ja)
+                    :Send spiller til start;
+                else (Nei)
+                    :Spiller blir på tile;
+                endif
+            else (Nei)
+                :Ingen handling utføres;
+            endif
+        endif
+    endif
+else (Nei)
+    :Ingen handling utføres;
+endif
+
+if (Tile er siste tile?) then (Ja)
+    :Spiller vinner spillet;
+else (Nei)
+    :Spiller venter på neste tur;
+endif
+
+stop
+@enduml
