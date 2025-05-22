@@ -8,7 +8,7 @@
   <artifactId>IDATT2003-Mappe2-Boardgame</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>IDATT2003 Boardgame</name>
-  <url>http://maven.apache.org</url>
+  <url>https://maven.apache.org</url>
 
   <!-- Version and encoding configuration -->
   <properties>
@@ -84,7 +84,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>edu.ntnu.iir.bidata.javafx.BoardGameAppGUI</mainClass>
+          <mainClass>edu.ntnu.iir.bidata.javafx.BoardGameAppGui</mainClass>
         </configuration>
       </plugin>
     </plugins>
