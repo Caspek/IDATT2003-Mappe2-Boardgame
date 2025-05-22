@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  * This class handles the setup screen, user input validation, and transitions to the game view.
  */
 
-public class BoardGameAppGui extends Application {
+public class BoardGameAppGUI extends Application {
 
   /**
    * Starts the JavaFX application.

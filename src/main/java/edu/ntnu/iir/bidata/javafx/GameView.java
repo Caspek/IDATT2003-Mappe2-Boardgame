@@ -224,7 +224,7 @@ public class GameView implements BoardGameObserver {
     homeButton.setOnAction(e -> {
       javafx.application.Platform.runLater(() -> {
         try {
-          new BoardGameAppGui().start(new Stage());
+          new BoardGameAppGUI().start(new Stage());
         } catch (Exception ex) {
           ex.printStackTrace();
         }
