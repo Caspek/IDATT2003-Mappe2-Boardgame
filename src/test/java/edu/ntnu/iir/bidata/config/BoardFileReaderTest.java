@@ -13,7 +13,6 @@ class BoardFileReaderTest {
 
     @Test
     void testReadValidBoardFile() {
-        // Adjusted path to use the correct relative location
         String path = Paths.get("src/main/resources/RandomBoard.json").toAbsolutePath().toString();
         System.out.println("Debug: File path is " + path);
 

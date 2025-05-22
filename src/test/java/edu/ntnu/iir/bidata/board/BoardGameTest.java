@@ -46,7 +46,6 @@ class BoardGameTest {
 
     @Test
     void testGameEndsWhenPlayerWins() {
-        // Fast-forward to winning tile (simulate winning)
         Player player = game.getCurrentPlayer();
         Tile lastTile = game.getBoardInternal().getTile(90);
         player.setCurrentTile(lastTile);

@@ -5,5 +5,11 @@ package edu.ntnu.iir.bidata.dice;
  * Implementing classes should provide the logic for rolling the dice.
  */
 public interface Dice {
-    int roll();
+
+  /**
+   * Rolls the dice and returns the total sum of the rolls.
+   *
+   * @return The sum of the dice rolls.
+   */
+  int roll();
 }
