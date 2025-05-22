@@ -86,5 +86,9 @@ public class TurnResult {
                 ", hasWon=" + hasWon +
                 '}';
     }
+
+    public int getRoll() {
+        return roll;
+    }
 }
 

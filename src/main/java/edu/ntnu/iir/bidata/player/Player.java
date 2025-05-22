@@ -38,11 +38,15 @@ public class Player {
     /**
      * Sets the current tile the player is on.
      *
-     * @param currentTile The tile to set as the player's current position.
+     * @param tile The tile to set as the player's current position.
      */
-    public void setCurrentTile(Tile currentTile) {
-        this.currentTile = currentTile;
+    public void setCurrentTile(Tile tile) {
+        if (tile == null) {
+            throw new IllegalArgumentException("Tile cannot be null");
+        }
+        this.currentTile = tile;
     }
+
 
     /**
      * Sets the number of steps the player moved during the last special move.
