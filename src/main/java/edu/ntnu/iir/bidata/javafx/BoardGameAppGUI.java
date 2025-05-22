@@ -30,14 +30,14 @@ public class BoardGameAppGui extends Application {
             int boardChoice = setupPane.getBoardChoice();
             List<String> selectedPieces = setupPane.getSelectedPieces();
 
-            // Validate user input
+            // Validate user input.
             if (selectedPieces.contains(null)
                 || selectedPieces.stream().distinct().count() != selectedPieces.size()) {
               showAlert("Each player must select a unique piece.");
               return;
             }
 
-            // Load the board and initialize the game
+            // Load the board and initialize the game.
             BoardGame game = BoardGameFactory.loadBoardFromFile(boardChoice);
             if (game.getDice() == null) {
               game.setDice(2, false);
