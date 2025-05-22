@@ -25,6 +25,8 @@ public class DiceLogic implements Dice {
         }
     }
 
+
+
     /**
      * Rolls all the dice and returns the total sum.
      * @return The sum of the dice rolls.
