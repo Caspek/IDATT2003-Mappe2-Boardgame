@@ -90,5 +90,18 @@ public class TurnResult {
     public int getRoll() {
         return roll;
     }
+
+    public Tile getFromTile() {
+        return fromTile;
+    }
+
+    public Tile getToTile() {
+        return toTile;
+    }
+
+    public boolean hasWon() {
+        return hasWon;
+    }
+
 }
 
