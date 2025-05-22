@@ -1,6 +1,7 @@
-package edu.ntnu.iir.bidata.board;
+package edu.ntnu.iir.bidata.config;
 
-import edu.ntnu.iir.bidata.JsonParsingException;
+import edu.ntnu.iir.bidata.util.JsonParsingException;
+import edu.ntnu.iir.bidata.board.Board;
 import edu.ntnu.iir.bidata.tile.MoveExtraStepsAction;
 import edu.ntnu.iir.bidata.tile.RandomTeleportAction;
 import edu.ntnu.iir.bidata.tile.Tile;

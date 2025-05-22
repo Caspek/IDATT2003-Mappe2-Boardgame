@@ -1,11 +1,12 @@
 package edu.ntnu.iir.bidata.board;
 
+import edu.ntnu.iir.bidata.config.BoardFileReader;
 import edu.ntnu.iir.bidata.dice.Dice;
 import edu.ntnu.iir.bidata.dice.DiceLogic;
 import edu.ntnu.iir.bidata.observer.BoardGameObserver;
 import edu.ntnu.iir.bidata.player.Player;
 import edu.ntnu.iir.bidata.tile.Tile;
-import edu.ntnu.iir.bidata.game.TurnResult;
+import edu.ntnu.iir.bidata.player.TurnResult;
 
 import java.util.*;
 

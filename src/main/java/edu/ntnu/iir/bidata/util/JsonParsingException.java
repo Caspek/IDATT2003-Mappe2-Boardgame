@@ -1,4 +1,4 @@
-package edu.ntnu.iir.bidata;
+package edu.ntnu.iir.bidata.util;
 
 /**
  * Custom exception to signal errors during JSON parsing.

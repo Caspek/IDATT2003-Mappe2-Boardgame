@@ -1,7 +1,7 @@
 package edu.ntnu.iir.bidata.tile;
 
 import edu.ntnu.iir.bidata.board.BoardGame;
-import edu.ntnu.iir.bidata.board.BoardGameFactory;
+import edu.ntnu.iir.bidata.config.BoardGameFactory;
 import edu.ntnu.iir.bidata.player.Player;
 import org.junit.jupiter.api.Test;
 

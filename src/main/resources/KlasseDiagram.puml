@@ -1,59 +1,196 @@
 @startuml
-class Player {
-    - name: String
-    - currentTile: Tile
-    - game: Game
-    - lastActionMessage: String
-    + setCurrentTile(tile: Tile): void
-    + getCurrentTile(): Tile
-    + setLastActionMessage(message: String): void
-    + getLastActionMessage(): String
+' === Pakker ===
+package board {
+  class Board {
+    - tiles: Map<Integer, Tile>
+    + setTiles(tiles: Map<Integer, Tile>)
+    + getAllTiles(): Collection<Tile>
+    + getTile(id: int): Tile
+    + getNextTile(currentTile: Tile, roll: int): Tile
+  }
+
+  class BoardGame {
+    - board: Board
+    - players: List<Player>
+    - dice: Dice
+    - currentPlayerIndex: int
+    - gameOver: boolean
+    - observers: Set<BoardGameObserver>
+    + loadBoard(filePath: String)
+    + setTiles(tiles: Map<Integer, Tile>)
+    + getStartingTile(): Tile
+    + setDice(numberOfDice: int, isQueueBoard: boolean)
+    + addPlayer(name: String)
+    + playTurn(): TurnResult
+    + getCurrentPlayer(): Player
+    + addObserver(observer: BoardGameObserver)
+    + getPlayers(): List<Player>
+    + getDice(): Dice
+  }
 }
 
-class Tile {
+package dice {
+  interface Dice {
+    + roll(): int
+  }
+
+  class DiceLogic {
+    - dice: List<Die>
+    + DiceLogic(numberOfDice: int)
+    + roll(): int
+  }
+
+  class Die {
+    - maxValue: int
+    + Die()
+    + Die(maxValue: int)
+    + roll(): int
+  }
+}
+
+package tile {
+  class Tile {
     - id: int
     - nextTile: Tile
     - landAction: TileAction
-    + landPlayer(player: Player): void
-    + leavePlayer(player: Player): void
-}
+    + getId(): int
+    + getNextTile(): Tile
+    + setNextTile(next: Tile)
+    + setLandAction(action: TileAction)
+    + landPlayer(player: Player)
+    + leavePlayer(player: Player)
+    + isWinningTile(): boolean
+  }
 
-interface TileAction {
-    + execute(player: Player): void
-}
+  interface TileAction {
+    + execute(player: Player)
+  }
 
-class MoveExtraStepsAction implements TileAction {
+  class MoveExtraStepsAction {
     - steps: int
-    + execute(player: Player): void
-}
+    + MoveExtraStepsAction(steps: int)
+    + execute(player: Player)
+  }
 
-class RandomTeleportAction implements TileAction {
+  class RandomTeleportAction {
     - board: Board
-    + execute(player: Player): void
-}
+    + RandomTeleportAction(board: Board)
+    + execute(player: Player)
+  }
 
-class QueueTileAction implements TileAction {
+  class QueueTileAction {
     - currentOccupant: Player
-    + execute(player: Player): void
+    + execute(player: Player)
+  }
 }
 
-class Game {
-    - startingTile: Tile
-    + getStartingTile(): Tile
+package player {
+  class Player {
+    - name: String
+    - game: BoardGame
+    - currentTile: Tile
+    - lastSpecialMoveSteps: int
+    - lastActionMessage: String
+    + getCurrentTile(): Tile
+    + setCurrentTile(tile: Tile)
+    + setLastSpecialMoveSteps(steps: int)
+    + getLastSpecialMoveSteps(): int
+    + setLastActionMessage(msg: String)
+    + getLastActionMessage(): String
+    + move(steps: int): Tile
+    + getName(): String
+    + getGame(): BoardGame
+  }
+
+  class TurnResult {
+    - player: Player
+    - roll: int
+    - fromTile: Tile
+    - toTile: Tile
+    - hasWon: boolean
+    + getPlayer(): Player
+    + toString(): String
+  }
 }
 
-class Board {
-    - tiles: List<Tile>
-    + getAllTiles(): List<Tile>
-    + getTile(id: int): Tile
+package config {
+  class BoardFileReader {
+    + readBoardFromFile(filePath: String, board: Board): Map<Integer, Tile>
+  }
+
+  class BoardGameFactory {
+    + createSimpleBoard(): BoardGame
+    + createPainfulBoard(): BoardGame
+    + createQueueBoard(): BoardGame
+    + loadBoardFromFile(choice: int): BoardGame
+  }
+
+  class PlayerLoader {
+    + loadPlayerNamesFromFile(filePath: String): List<String>
+  }
 }
 
-Player --> Tile : "currentTile"
-Tile --> TileAction : "landAction"
-TileAction <|.. MoveExtraStepsAction
-TileAction <|.. RandomTeleportAction
-TileAction <|.. QueueTileAction
-Player --> Game : "game"
-Game --> Tile : "startingTile"
-Board --> Tile : "tiles"
+package gui {
+  class BoardGameAppGUI
+  class SetupPane
+  class GameView
+}
+
+package observer {
+  interface BoardGameObserver {
+    + onPlayerMoved(player: Player, from: Tile, to: Tile, roll: int)
+    + onSpecialTile(player: Player, tile: Tile, description: String)
+    + onGameWon(winner: Player)
+  }
+}
+
+package util {
+  class JsonParsingException {
+    + JsonParsingException(message: String, cause: Throwable)
+  }
+}
+
+' === Relasjoner ===
+BoardGame --> Board
+BoardGame --> Dice
+BoardGame --> Player
+BoardGame --> BoardGameObserver
+BoardGame --> TurnResult
+BoardGame --> BoardFileReader
+
+Board --> Tile
+BoardFileReader --> Board
+BoardFileReader --> Tile
+BoardFileReader --> MoveExtraStepsAction
+BoardFileReader --> RandomTeleportAction
+
+BoardGameFactory --> BoardGame
+BoardGameFactory --> Tile
+BoardGameFactory --> Board
+
+DiceLogic ..|> Dice
+DiceLogic --> Die
+
+Tile --> TileAction
+MoveExtraStepsAction ..|> TileAction
+RandomTeleportAction ..|> TileAction
+QueueTileAction ..|> TileAction
+
+Player --> BoardGame
+Player --> Tile
+
+TurnResult --> Player
+TurnResult --> Tile
+
+JsonParsingException ..|> RuntimeException
+
+GameView --> BoardGame
+GameView --> BoardGameObserver
+GameView --> Player
+GameView --> Tile
+
+BoardGameAppGUI --> SetupPane
+BoardGameAppGUI --> GameView
+SetupPane --> PlayerLoader
+
 @enduml

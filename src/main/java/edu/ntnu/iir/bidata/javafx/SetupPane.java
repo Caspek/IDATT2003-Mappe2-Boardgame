@@ -1,6 +1,6 @@
 package edu.ntnu.iir.bidata.javafx;
 
-import edu.ntnu.iir.bidata.player.PlayerLoader;
+import edu.ntnu.iir.bidata.config.PlayerLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;

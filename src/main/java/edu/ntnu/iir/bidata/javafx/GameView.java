@@ -1,9 +1,9 @@
 package edu.ntnu.iir.bidata.javafx;
 
 import edu.ntnu.iir.bidata.board.BoardGame;
-import edu.ntnu.iir.bidata.board.BoardGameFactory;
+import edu.ntnu.iir.bidata.config.BoardGameFactory;
 import edu.ntnu.iir.bidata.observer.BoardGameObserver;
-import edu.ntnu.iir.bidata.game.TurnResult;
+import edu.ntnu.iir.bidata.player.TurnResult;
 import edu.ntnu.iir.bidata.player.Player;
 import edu.ntnu.iir.bidata.tile.Tile;
 import javafx.geometry.Insets;
@@ -103,7 +103,7 @@ public class GameView implements BoardGameObserver {
         // Controls
         updateCurrentPlayer(game);
         nextTurnButton.setOnAction(e -> {
-            if (game == null || game.isGameOver() == false) {
+            if (!game.isGameOver()) {
                 outputArea.appendText("Game is not in a valid state to proceed.\n");
                 return;
             }

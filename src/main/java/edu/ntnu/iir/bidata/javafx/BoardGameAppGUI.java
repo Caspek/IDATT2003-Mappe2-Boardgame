@@ -1,7 +1,7 @@
 package edu.ntnu.iir.bidata.javafx;
 
 import edu.ntnu.iir.bidata.board.BoardGame;
-import edu.ntnu.iir.bidata.board.BoardGameFactory;
+import edu.ntnu.iir.bidata.config.BoardGameFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;

@@ -1,4 +1,4 @@
-package edu.ntnu.iir.bidata.player;
+package edu.ntnu.iir.bidata.config;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

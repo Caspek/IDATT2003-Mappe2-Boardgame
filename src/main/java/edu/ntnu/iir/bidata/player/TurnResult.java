@@ -1,6 +1,5 @@
-package edu.ntnu.iir.bidata.game;
+package edu.ntnu.iir.bidata.player;
 
-import edu.ntnu.iir.bidata.player.Player;
 import edu.ntnu.iir.bidata.tile.Tile;
 
 import java.util.Objects;

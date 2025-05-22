@@ -1,5 +1,7 @@
-package edu.ntnu.iir.bidata.board;
+package edu.ntnu.iir.bidata.config;
 
+import edu.ntnu.iir.bidata.board.Board;
+import edu.ntnu.iir.bidata.board.BoardGame;
 import edu.ntnu.iir.bidata.tile.MoveExtraStepsAction;
 import edu.ntnu.iir.bidata.tile.QueueTileAction;
 import edu.ntnu.iir.bidata.tile.Tile;
